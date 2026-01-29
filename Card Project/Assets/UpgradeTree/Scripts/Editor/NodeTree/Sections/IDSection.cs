@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class IDSection : Section
 {
+    private readonly NodeTreeContext _ctx;
     private ReorderableList _idList;
     private bool _showIDSection = true;
 
     private readonly EditorFlowerAnimation _anim = new();
 
-    public IDSection(NodeTreeContext ctx) : base(ctx) 
+    public IDSection(ContextSystem ctx) : base(ctx) 
     {
-        if (ctx.IDsProp != null) SetupIDList(); 
+        _ctx = (NodeTreeContext)ctx;
+        if (_ctx.IDsProp != null) SetupIDList(); 
     }
     public override void Draw()
     {
@@ -29,13 +31,13 @@ public class IDSection : Section
     }
     private void DrawIDStats()
     {
-        if (ctx.IDsProp == null || ctx.IDsProp.arraySize == 0) return;
+        if (_ctx.IDsProp == null || _ctx.IDsProp.arraySize == 0) return;
 
         GUILayout.Space(8);
 
-        var usedCount = ctx.Tree.IDs?.Count(id =>
-            ctx.Tree.Nodes?.Any(n => n != null && n.ID.Value == id) ?? false) ?? 0;
-        var unusedCount = (ctx.Tree.IDs?.Count ?? 0) - usedCount;
+        var usedCount = _ctx.Tree.IDs?.Count(id =>
+            _ctx.Tree.Nodes?.Any(n => n != null && n.ID.Value == id) ?? false) ?? 0;
+        var unusedCount = (_ctx.Tree.IDs?.Count ?? 0) - usedCount;
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
@@ -53,9 +55,9 @@ public class IDSection : Section
     }
     public void SetupIDList()
     {
-        if (ctx.IDsProp == null) return;
+        if (_ctx.IDsProp == null) return;
 
-        _idList = new ReorderableList(ctx.SerializedObject, ctx.IDsProp, true, true, true, true)
+        _idList = new ReorderableList(_ctx.SerializedObject, _ctx.IDsProp, true, true, true, true)
         {
             drawHeaderCallback = rect =>
             {
@@ -64,20 +66,20 @@ public class IDSection : Section
 
                 EditorGUI.LabelField(labelRect, "Registered IDs", EditorStyles.boldLabel);
 
-                EditorDrawUtils.DrawCountBadge(countRect, ctx.IDsProp.arraySize, EditorColors.PrimaryColor);
+                EditorDrawUtils.DrawCountBadge(countRect, _ctx.IDsProp.arraySize, EditorColors.PrimaryColor);
             },
 
             drawElementCallback = (rect, index, active, focused) =>
             {
-                if (ctx.IDsProp == null) return;
-                var element = ctx.IDsProp.GetArrayElementAtIndex(index);
+                if (_ctx.IDsProp == null) return;
+                var element = _ctx.IDsProp.GetArrayElementAtIndex(index);
                 if (element == null) return;
 
                 rect.y += 2;
                 rect.height = EditorGUIUtility.singleLineHeight;
 
                 var id = element.stringValue;
-                var usageCount = ctx.Tree?.Nodes?.Count(n => n != null && n.ID.Value == id) ?? 0;
+                var usageCount = _ctx.Tree?.Nodes?.Count(n => n != null && n.ID.Value == id) ?? 0;
 
                 var bgRect = new Rect(rect.x - 4, rect.y - 2, rect.width + 8, rect.height + 4);
                 var bgColor = usageCount == 0 ? EditorColors.WarningBgLight : EditorColors.SuccessBgLight;
@@ -111,8 +113,8 @@ public class IDSection : Section
 
             onRemoveCallback = list =>
             {
-                var id = ctx.IDsProp.GetArrayElementAtIndex(list.index).stringValue;
-                var usedBy = ctx.Tree?.Nodes?.Where(n => n != null && n.ID.Value == id).ToList();
+                var id = _ctx.IDsProp.GetArrayElementAtIndex(list.index).stringValue;
+                var usedBy = _ctx.Tree?.Nodes?.Where(n => n != null && n.ID.Value == id).ToList();
 
                 if (usedBy != null && usedBy.Count > 0)
                 {

@@ -1,9 +1,9 @@
 using System;
 
 
-    [Serializable]
-    public class TreeActions
-    {
-        public Action[] Actions;
-    }
+[Serializable]
+public class TreeActions
+{
+    public Action[] Actions;
+}
 

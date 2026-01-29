@@ -1,8 +1,7 @@
 ﻿public abstract class Section
 {
-    protected NodeTreeContext ctx;
-
-    public Section(NodeTreeContext ctx)
+    protected ContextSystem ctx;
+    public Section(ContextSystem ctx)
     {
         this.ctx = ctx;
     }

@@ -3,15 +3,10 @@ using UnityEngine;
 
 public abstract class EditorNames
 {
-    protected NodeTreeContext context;
+    protected ContextSystem context;
     protected Rect headerRect;
 
-    protected double lastUpdateTime;
-    public EditorNames(NodeTreeContext context, double lastUpdateTime)
-    {
-        this.context = context;
-        this.lastUpdateTime = lastUpdateTime;
-    }
+    public EditorNames(ContextSystem context) => this.context = context;
 
     public void DrawHeader()
     {

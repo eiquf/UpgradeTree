@@ -1,0 +1,94 @@
+using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
+
+public class NodeReorderableList
+{
+    public ReorderableList List { get; }
+
+    private readonly EditorFlowerAnimation _anim = new();
+
+    public NodeReorderableList(
+        SerializedObject so,
+        SerializedProperty property,
+        string header,
+        Color badgeColor)
+    {
+        List = new ReorderableList(so, property, true, true, true, true)
+        {
+            elementHeight = 24,
+
+            drawHeaderCallback = rect =>
+            {
+                EditorGUI.LabelField(
+                    new Rect(rect.x, rect.y, rect.width - 60, rect.height),
+                    header,
+                    EditorStyles.boldLabel
+                );
+
+                EditorDrawUtils.DrawCountBadge(
+                    new Rect(rect.xMax - 55, rect.y, 55, rect.height),
+                    property.arraySize,
+                    badgeColor
+                );
+            },
+
+            drawElementCallback = (rect, index, active, focused) =>
+            {
+                DrawElement(rect, property, index);
+            },
+
+            drawElementBackgroundCallback = DrawBackground,
+
+            onAddCallback = list =>
+            {
+                list.serializedProperty.InsertArrayElementAtIndex(
+                    list.serializedProperty.arraySize
+                );
+                _anim?.Spawn(Event.current.mousePosition, 5);
+            }
+        };
+    }
+
+    protected virtual void DrawElement(Rect rect, SerializedProperty list, int index)
+    {
+        var element = list.GetArrayElementAtIndex(index);
+        rect.y += 2;
+        rect.height = EditorGUIUtility.singleLineHeight;
+
+        var node = element.objectReferenceValue as Node;
+        var hasId = node != null && !string.IsNullOrEmpty(node.ID.Value);
+
+        var indicatorColor = node == null
+            ? EditorColors.ErrorColor
+            : hasId ? EditorColors.SuccessColor : EditorColors.WarningColor;
+
+        var bgColor = node == null
+            ? EditorColors.ErrorBgLight
+            : hasId ? EditorColors.SuccessBgLight : EditorColors.WarningBgLight;
+
+        EditorGUI.DrawRect(
+            new Rect(rect.x - 4, rect.y - 2, 3, rect.height + 4),
+            indicatorColor
+        );
+
+        EditorGUI.DrawRect(
+            new Rect(rect.x - 1, rect.y - 2, rect.width + 2, rect.height + 4),
+            bgColor
+        );
+
+        EditorGUI.PropertyField(
+            new Rect(rect.x + 4, rect.y, rect.width - 130, rect.height),
+            element,
+            GUIContent.none
+        );
+    }
+
+    protected virtual void DrawBackground(Rect rect, int index, bool active, bool focused)
+    {
+        if (active)
+            EditorGUI.DrawRect(rect, new Color(0.4f, 0.3f, 0.6f, 0.3f));
+        else if (index % 2 == 0)
+            EditorGUI.DrawRect(rect, new Color(0f, 0f, 0f, 0.1f));
+    }
+}

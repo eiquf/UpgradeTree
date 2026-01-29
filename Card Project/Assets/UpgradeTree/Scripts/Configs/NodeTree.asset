@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0555f7a0db9c3498b24bd56b665c5d, type: 3}
   m_Name: NodeTree
   m_EditorClassIdentifier: 
-  Nodes: []
-  IDs: []
+  Nodes:
+  - {fileID: 11400000, guid: e56f78cabb1a5f449bd9c7cadc9f07e6, type: 2}
+  IDs:
+  - dsds
+  - NewID_1

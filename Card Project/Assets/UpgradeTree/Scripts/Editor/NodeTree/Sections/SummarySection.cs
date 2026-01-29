@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class SummarySection : Section
 {
+    private readonly NodeTreeContext _ctx;
     private readonly EditorFlowerAnimation _anim = new();
     
     private bool _showSummarySection = true;
 
-    public SummarySection(NodeTreeContext ctx) : base(ctx) { }
+    public SummarySection(NodeTreeContext ctx) : base(ctx) => _ctx = ctx;
 
     public override void Draw()
     {
@@ -21,13 +22,13 @@ public class SummarySection : Section
 
     private void DrawSummary()
     {
-        if (ctx.Tree.Nodes == null || ctx.Tree.Nodes.Count == 0)
+        if (_ctx.Tree.Nodes == null || _ctx.Tree.Nodes.Count == 0)
         {
             EditorDrawUtils.DrawEmptyState("📊", "No Data", "Add nodes to see statistics");
             return;
         }
 
-        var groups = ctx.Tree.Nodes
+        var groups = _ctx.Tree.Nodes
             .Where(n => n != null)
             .GroupBy(n => string.IsNullOrEmpty(n.ID.Value) ? "[No ID]" : n.ID.Value)
             .OrderByDescending(g => g.Count())
@@ -35,9 +36,9 @@ public class SummarySection : Section
 
         EditorGUILayout.BeginHorizontal();
 
-        var totalNodes = ctx.Tree.Nodes.Count(n => n != null);
-        var totalIds = ctx.Tree.IDs?.Count ?? 0;
-        var assignedNodes = ctx.Tree.Nodes.Count(n => n != null && !string.IsNullOrEmpty(n.ID.Value));
+        var totalNodes = _ctx.Tree.Nodes.Count(n => n != null);
+        var totalIds = _ctx.Tree.IDs?.Count ?? 0;
+        var assignedNodes = _ctx.Tree.Nodes.Count(n => n != null && !string.IsNullOrEmpty(n.ID.Value));
 
         EditorDrawUtils.DrawStatCard("Nodes", totalNodes.ToString(), EditorColors.SecondaryColor);
         EditorDrawUtils.DrawStatCard("IDs", totalIds.ToString(), EditorColors.PrimaryColor);
@@ -78,10 +79,10 @@ public class SummarySection : Section
             var buttonStyle = new GUIStyle(EditorStyles.miniButton) { fontSize = 9 };
             if (GUILayout.Button("Keep First", buttonStyle, GUILayout.Width(70)))
             {
-                Undo.RecordObject(ctx.Tree, "Remove Duplicates");
+                Undo.RecordObject(_ctx.Tree, "Remove Duplicates");
                 var toRemove = nodes.Skip(1).ToList();
-                ctx.Tree.Nodes = ctx.Tree.Nodes.Where(n => n == null || !toRemove.Contains(n)).ToList();
-                EditorUtility.SetDirty(ctx.Tree);
+                _ctx.Tree.Nodes = _ctx.Tree.Nodes.Where(n => n == null || !toRemove.Contains(n)).ToList();
+                EditorUtility.SetDirty(_ctx.Tree);
 
                 var buttonRect = GUILayoutUtility.GetLastRect();
                 _anim.Spawn(new Vector2(buttonRect.center.x, buttonRect.center.y), toRemove.Count * 3);

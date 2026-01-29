@@ -16,10 +16,10 @@ MonoBehaviour:
     Value: 
   <Description>k__BackingField: 
   <Name>k__BackingField: 
-  <nextNodes>k__BackingField: []
-  <prerequisiteNodes>k__BackingField: []
+  NextNodes: []
+  PrerequisiteNodes: []
   <Cost>k__BackingField: 0
   <MaxLevel>k__BackingField: 0
-  <stats>k__BackingField: {fileID: 0}
-  <position>k__BackingField: {x: 0, y: 0}
-  <icon>k__BackingField: {fileID: 0}
+  <Stats>k__BackingField: {fileID: 0}
+  <Position>k__BackingField: {x: 0, y: 0}
+  <Icon>k__BackingField: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}

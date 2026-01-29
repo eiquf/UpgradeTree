@@ -4,21 +4,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewNode", menuName = "NodeTree/Node")]
 public class Node : ScriptableObject
 {
-    [field: Header("Info")]
-    public NodeID ID;
-    [field: SerializeField] public string Description { get; private set; }
-    [field: SerializeField] public string Name { get; private set; }
+    [Header("Info")]
+    [SerializeField] private NodeID id;
+    [SerializeField, TextArea(3, 6)] private string description;
+    [SerializeField] private string displayName;
 
-    [field: Header("Graph")]
-    [field: SerializeField] public List<Node> nextNodes { get; private set; } = new();
-    [field: SerializeField] public List<Node> prerequisiteNodes { get; private set; } = new();
+    [Header("Graph")]
+    public List<Node> NextNodes = new();
+    public List<Node> PrerequisiteNodes = new();
 
+    [Header("Requirements")]
+    [SerializeField] private int cost;
+    [SerializeField] private int maxLevel;
 
-    [field: Header("Requirments")]
-    [field: SerializeField] public int Cost { get; private set; }
-    [field: SerializeField] public int MaxLevel { get; private set; }
-    [field: Header("Other")]
-    [field: SerializeField] public SkillSO stats { get; private set; }
-    [field: SerializeField] public Vector2 position { get; private set; }
-    [field: SerializeField] public Sprite icon { get; private set; }
+    [Header("Other")]
+    [SerializeField] private SkillSO stats;
+    [SerializeField] private Vector2 position;
+    [SerializeField] private Sprite icon;
+
+    public NodeID ID => id;
+    public string Description => description;
+    public string Name => displayName;
+    public Sprite Icon => icon;
 }

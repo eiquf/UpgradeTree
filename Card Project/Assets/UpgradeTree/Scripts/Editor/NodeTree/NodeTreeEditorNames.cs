@@ -2,27 +2,36 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Custom editor names for the <see cref="NodeTree"/> editor interface.
+/// This class handles drawing the background, borders, icons, title, status badges, footer buttons,
+/// and footer text for the node tree editor, as well as managing flower animations.
+/// </summary>
 public class NodeTreeEditorNames : EditorNames
 {
+    private readonly NodeTreeContext _ctx;
+
     private readonly string _name;
     private readonly EditorFlowerAnimation _anim = new();
 
-    public NodeTreeEditorNames(NodeTreeContext context, string name, double lastUpdateTime)
-        : base(context, lastUpdateTime)
+    /// <param name="context">The <see cref="NodeTreeContext"/> providing data for the node tree editor.</param>
+    /// <param name="name">The name of the node tree.</param>
+    /// <param name="lastUpdateTime">The last time the editor was updated.</param>
+    public NodeTreeEditorNames(ContextSystem context, string name)
+        : base(context)
     {
         _name = name;
+        _ctx = (NodeTreeContext)context;
     }
 
-    protected override void DrawBackground(Rect rect)
-    {
+    protected override void DrawBackground(Rect rect) =>
         EditorDrawUtils.DrawGradientRect(rect, new Color(0.2f, 0.25f, 0.35f), new Color(0.15f, 0.18f, 0.25f));
-    }
+    protected override void DrawBorders(Rect rect) => EditorDrawUtils.DrawBorder(rect, EditorColors.PrimaryColor, 2);
 
-    protected override void DrawBorders(Rect rect)
-    {
-        EditorDrawUtils.DrawBorder(rect, EditorColors.PrimaryColor, 2);
-    }
-
+    /// <summary>
+    /// Draws the icons at the corners of the editor header.
+    /// </summary>
+    /// <param name="rect">The rectangle where the icons should be drawn.</param>
     protected override void DrawIcons(Rect rect)
     {
         var flowerStyle = new GUIStyle { fontSize = 16, alignment = TextAnchor.MiddleCenter };
@@ -34,7 +43,6 @@ public class NodeTreeEditorNames : EditorNames
         var iconRect = new Rect(rect.x + 12, rect.y + 10, 30, 30);
         GUI.Label(iconRect, "🌳", new GUIStyle { fontSize = 24, alignment = TextAnchor.MiddleCenter });
     }
-
     protected override void DrawTitle(Rect rect)
     {
         var titleStyle = new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 };
@@ -43,21 +51,27 @@ public class NodeTreeEditorNames : EditorNames
         GUI.Label(titleRect, _name, titleStyle);
     }
 
+    /// <summary>
+    /// Draws the status badge with information about the number of nodes and IDs.
+    /// Also indicates if there are any issues with the node tree.
+    /// </summary>
+    /// <param name="rect">The rectangle where the status badge should be drawn.</param>
     protected override void DrawStatusBadge(Rect rect)
     {
-        var nodeCount = context.Tree.Nodes?.Count(n => n != null) ?? 0;
-        var idCount = context.Tree.IDs?.Count ?? 0;
-        var subtitleStyle = new GUIStyle(EditorStyles.miniLabel);
-        subtitleStyle.normal.textColor = new Color(0.7f, 0.7f, 0.7f);
+        var nodeCount = _ctx.Tree.Nodes?.Count(n => n != null) ?? 0;
+        var idCount = _ctx.Tree.IDs?.Count ?? 0;
+        var subtitleStyle = new GUIStyle(EditorStyles.miniLabel)
+        {
+            normal = { textColor = new Color(0.7f, 0.7f, 0.7f) }
+        };
 
         var subtitleRect = new Rect(rect.x + 50, rect.y + 26, rect.width - 120, 16);
         GUI.Label(subtitleRect, $"{nodeCount} nodes • {idCount} IDs", subtitleStyle);
 
         var badgeRect = new Rect(rect.xMax - 70, rect.y + 15, 60, 20);
-        var isValid = nodeCount > 0 && context.Tree.Nodes.All(n => n == null || !string.IsNullOrEmpty(n.ID.Value));
+        var isValid = nodeCount > 0 && _ctx.Tree.Nodes.All(n => n == null || !string.IsNullOrEmpty(n.ID.Value));
         EditorDrawUtils.DrawStatusBadge(badgeRect, isValid ? "Valid" : "Issues", isValid ? EditorColors.SuccessColor : EditorColors.WarningColor);
     }
-
     protected override void DrawFooterButtons()
     {
         EditorGUILayout.BeginHorizontal();
@@ -72,7 +86,6 @@ public class NodeTreeEditorNames : EditorNames
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
     }
-
     protected override void DrawFooterText()
     {
         GUILayout.Space(4);
@@ -84,11 +97,7 @@ public class NodeTreeEditorNames : EditorNames
 
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
-        UpdateAndDrawFlowers();
+        UpdateAndDrawFlowersAnim();
     }
-
-    private void UpdateAndDrawFlowers()
-    {
-        _anim.UpdateAndDraw_flowers(lastUpdateTime);
-    }
+    private void UpdateAndDrawFlowersAnim() => _anim.UpdateAndDraw_flowers(_ctx.LastUpdateTime);
 }
