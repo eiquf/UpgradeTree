@@ -12,14 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
   m_Name: NewNode
   m_EditorClassIdentifier: 
-  ID:
-    Value: 
-  <Description>k__BackingField: 
-  <Name>k__BackingField: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  <Cost>k__BackingField: 0
-  <MaxLevel>k__BackingField: 0
-  <Stats>k__BackingField: {fileID: 0}
-  <Position>k__BackingField: {x: 0, y: 0}
-  <Icon>k__BackingField: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  id:
+    Value: NewID_3
+  description: 
+  displayName: 
+  NextNodes:
+  - {fileID: 11400000}
+  PrerequisiteNodes:
+  - {fileID: 11400000}
+  cost: 0
+  maxLevel: 116
+  stats: {fileID: 0}
+  position: {x: 0, y: 0}
+  icon: {fileID: 0}

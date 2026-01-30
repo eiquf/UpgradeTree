@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class NodeGraphSection : Section
 {
@@ -17,7 +16,9 @@ public class NodeGraphSection : Section
     public NodeGraphSection(ContextSystem ctx) : base(ctx)
     {
         _ctx = (NodeContext)ctx;
-        Setup();
+
+        if (_ctx.NextProp != null && _ctx.PrerequisiteProp != null)
+            Setup();
     }
 
     private void Setup()
@@ -28,7 +29,8 @@ public class NodeGraphSection : Section
                 _ctx.SerializedObject,
                 _ctx.NextProp,
                 "Next Nodes",
-                EditorColors.PrimaryColor
+                EditorColors.PrimaryColor,
+                _ctx
             );
         }
 
@@ -38,7 +40,8 @@ public class NodeGraphSection : Section
                 _ctx.SerializedObject,
                 _ctx.PrerequisiteProp,
                 "Prerequisite Nodes",
-                EditorColors.SecondaryColor
+                EditorColors.SecondaryColor,
+                _ctx
             );
         }
     }

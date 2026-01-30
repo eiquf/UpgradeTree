@@ -1,5 +1,4 @@
 ﻿public abstract class ContextSystem
 {
-    protected double lastUpdatedTime;
-
+    public INodeIDMenu IDMenu { get; protected set; }
 }

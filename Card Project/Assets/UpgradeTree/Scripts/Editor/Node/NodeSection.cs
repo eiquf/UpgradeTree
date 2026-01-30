@@ -9,7 +9,6 @@ public class NodeSection : Section
     private NodeValidationDrawer _validator;
 
     private bool _showNodesSection = true;
-    private readonly EditorFlowerAnimation _anim = new();
 
     public NodeSection(ContextSystem ctx) : base(ctx)
     {
@@ -25,7 +24,8 @@ public class NodeSection : Section
             _ctx.SerializedObject,
             _ctx.NodesProp,
             "Node References",
-            EditorColors.SecondaryColor
+            EditorColors.SecondaryColor,
+            _ctx
         );
 
         _validator = new NodeValidationDrawer();

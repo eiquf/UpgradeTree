@@ -26,4 +26,6 @@ public class Node : ScriptableObject
     public string Description => description;
     public string Name => displayName;
     public Sprite Icon => icon;
+    public int Cost => cost;
+    public int MaxLevel => maxLevel;
 }

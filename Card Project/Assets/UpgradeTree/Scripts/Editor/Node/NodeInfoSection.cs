@@ -1,105 +1,75 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class NodeInfoSection
+internal sealed class NodeInfoSection
 {
     private readonly SerializedObject _so;
+    private readonly NodeContext _ctx;
 
     private readonly SerializedProperty _id;
     private readonly SerializedProperty _description;
     private readonly SerializedProperty _icon;
 
-    private SimplePropertyDrawer _idDrawer;
-    private SimplePropertyDrawer _descriptionDrawer;
-    private SimplePropertyDrawer _iconDrawer;
+    private readonly SerializedProperty _idValue;
 
-    private bool _showIDProperty = false;
-    private bool _showDescriptionProperty = false;
-    private bool _showIconProperty = false;
+    private readonly NodeReorderableList _idList;
 
-    public NodeInfoSection(SerializedObject so)
+    private bool _isExpanded;
+
+    public NodeInfoSection(SerializedObject so, NodeContext ctx)
     {
         _so = so;
+        _ctx = ctx;
 
-        _id = so.FindProperty("ID");
-        _description = so.FindProperty("<Description>k__BackingField");
-        _icon = so.FindProperty("<Icon>k__BackingField");
+        _id = so.FindProperty("id");
+        _description = so.FindProperty("description");
+        _icon = so.FindProperty("icon");
+
+        _idValue = _id?.FindPropertyRelative("Value");
+
     }
 
     public void Draw(bool showArrow = true)
     {
-        if (_id != null)
-        {
-            _idDrawer = new SimplePropertyDrawer(
-                _so,
-                _id,
-                "ID",
-                EditorColors.SecondaryColor,
-                "🆔"
-            );
-            CollapsibleSection.DrawProperty(
-                "ID",
-                "🆔",
-                ref _showIDProperty,
-                EditorColors.SecondaryColor,
-                () => { _idDrawer.Draw(); }
-            );
-        }
+        if (_id == null) return;
 
-        if (_description != null)
-        {
-            _descriptionDrawer = new SimplePropertyDrawer(
-                _so,
-                _description,
-                "Description",
-                EditorColors.PrimaryColor,
-                "📚"
-            );
-            CollapsibleSection.Draw(
-                "Description",
-                "📚",
-                ref _showDescriptionProperty,
-                EditorColors.PrimaryColor,
-                () => { _descriptionDrawer.Draw(); },
-                showArrow
-            );
-        }
+        CollapsibleSection.Draw(
+            "Information",
+            "\U0001f978",
+            ref _isExpanded,
+            EditorColors.SecondaryColor,
+            DrawContent,
+            showArrow
+        );
 
-        if (_icon != null)
-        {
-            _iconDrawer = new SimplePropertyDrawer(
-                _so,
-                _icon,
-                "Icon",
-                EditorColors.SuccessBgLight,
-                "🖼"
-            );
-            CollapsibleSection.Draw(
-                "Icon",
-                "🖼",
-                ref _showIconProperty,
-                EditorColors.SuccessBgLight,
-                () => { _iconDrawer.Draw(); },
-                showArrow
-            );
-            DrawIconPreview();
-        }
+       
+    }
 
-        EditorGUILayout.Space(4);
+    private void DrawContent()
+    {
+        var idRect = EditorGUILayout.GetControlRect();
+
+        _ctx.Node.ID.Value = NodeIDField.Draw(
+            idRect,
+            _ctx.Node.ID.Value,
+            _ctx.Node,
+            _ctx
+        );
+
+        EditorUtility.SetDirty(_ctx.Node);
+
+        EditorGUILayout.PropertyField(_description);
+        EditorGUILayout.PropertyField(_icon);
+
+        DrawIconPreview();
     }
 
     private void DrawIconPreview()
     {
-        EditorGUILayout.BeginHorizontal();
+        if (_icon.objectReferenceValue is not Sprite sprite)
+            return;
 
-        EditorGUILayout.PropertyField(_icon);
-
-        if (_icon.objectReferenceValue != null)
-        {
-            var rect = GUILayoutUtility.GetRect(48, 48);
-            GUI.DrawTexture(rect, ((Sprite)_icon.objectReferenceValue).texture);
-        }
-
-        EditorGUILayout.EndHorizontal();
+        var rect = GUILayoutUtility.GetRect(48, 48);
+        GUI.DrawTexture(rect, sprite.texture);
     }
 }

@@ -1,9 +1,10 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
 public class NodeReorderableList
 {
+    private readonly ContextSystem _ctx;
     public ReorderableList List { get; }
 
     private readonly EditorFlowerAnimation _anim = new();
@@ -12,8 +13,11 @@ public class NodeReorderableList
         SerializedObject so,
         SerializedProperty property,
         string header,
-        Color badgeColor)
+        Color badgeColor,
+        ContextSystem ctx)
     {
+        _ctx = ctx;
+
         List = new ReorderableList(so, property, true, true, true, true)
         {
             elementHeight = 24,
@@ -33,10 +37,8 @@ public class NodeReorderableList
                 );
             },
 
-            drawElementCallback = (rect, index, active, focused) =>
-            {
-                DrawElement(rect, property, index);
-            },
+            drawElementCallback = (rect, index, _, _) =>
+                DrawElement(rect, property, index),
 
             drawElementBackgroundCallback = DrawBackground,
 
@@ -82,6 +84,22 @@ public class NodeReorderableList
             element,
             GUIContent.none
         );
+
+        if (node != null)
+        {
+            var idRect = new Rect(rect.xMax - 120, rect.y, 115, rect.height);
+            var buttonLabel = hasId ? node.ID.Value : "Select ID...";
+            var buttonStyle = new GUIStyle(EditorStyles.popup)
+            {
+                fontSize = 10
+            };
+
+            if (EditorGUI.DropdownButton(idRect, new GUIContent(buttonLabel),
+            FocusType.Keyboard, buttonStyle))
+            {
+                _ctx.IDMenu.Show(node);
+            }
+        }
     }
 
     protected virtual void DrawBackground(Rect rect, int index, bool active, bool focused)

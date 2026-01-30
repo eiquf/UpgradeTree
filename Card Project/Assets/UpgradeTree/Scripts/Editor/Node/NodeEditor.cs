@@ -29,7 +29,7 @@ public class NodeEditor : Editor
         _graph = new NodeGraphSection(_ctx);
         _names = new(_ctx, _node.name);
 
-        _info = new NodeInfoSection(serializedObject);
+        _info = new NodeInfoSection(serializedObject, _ctx);
         _requirements = new NodeRequirementsSection(serializedObject);
     }
 
