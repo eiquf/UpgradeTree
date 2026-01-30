@@ -6,12 +6,14 @@ public class NodeEditor : Editor
 {
     private SerializedProperty _nextProp;
     private SerializedProperty _prerequisiteProp;
-    private SerializedObject _so;
-    private Node _node;
-    private NodeGraphSection _graph;
-    private NodeContext _ctx;
-    private NodeEditorNames _names;
 
+    private SerializedObject _so;
+
+    private Node _node;
+    private NodeContext _ctx;
+
+    private NodeGraphSection _graph;
+    private NodeEditorNames _names;
     private NodeInfoSection _info;
     private NodeRequirementsSection _requirements;
 
@@ -45,7 +47,6 @@ public class NodeEditor : Editor
         }
 
         GUILayout.Space(8);
-
         _names.DrawHeader();
 
         GUILayout.Space(12);
@@ -57,6 +58,7 @@ public class NodeEditor : Editor
         GUILayout.Space(8);
         _graph.Draw();
 
+        _names.DrawFooter();
         EditorGUILayout.EndVertical();
         serializedObject.ApplyModifiedProperties();
     }

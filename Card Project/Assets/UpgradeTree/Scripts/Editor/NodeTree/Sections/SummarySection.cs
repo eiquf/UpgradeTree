@@ -35,6 +35,8 @@ public class SummarySection : Section
             .ToList();
 
         EditorGUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        GUILayout.ExpandWidth(false);
 
         var totalNodes = _ctx.Tree.Nodes.Count(n => n != null);
         var totalIds = _ctx.Tree.IDs?.Count ?? 0;
@@ -44,6 +46,7 @@ public class SummarySection : Section
         EditorDrawUtils.DrawStatCard("IDs", totalIds.ToString(), EditorColors.PrimaryColor);
         EditorDrawUtils.DrawStatCard("Assigned", $"{assignedNodes}/{totalNodes}", assignedNodes == totalNodes ? EditorColors.SuccessColor : EditorColors.WarningColor);
 
+        GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
 
         GUILayout.Space(8);

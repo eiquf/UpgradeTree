@@ -41,12 +41,21 @@ internal sealed class NodeInfoSection
             DrawContent,
             showArrow
         );
-
-       
     }
 
     private void DrawContent()
     {
+        DrawID();
+
+        GUILayout.Space(8);
+        EditorGUILayout.PropertyField(_description);
+
+        GUILayout.Space(8);
+        DrawIconPreview();
+    }
+    private void DrawID()
+    {
+        GUILayout.Label("ID", EditorStyles.boldLabel);
         var idRect = EditorGUILayout.GetControlRect();
 
         _ctx.Node.ID.Value = NodeIDField.Draw(
@@ -55,21 +64,34 @@ internal sealed class NodeInfoSection
             _ctx.Node,
             _ctx
         );
-
         EditorUtility.SetDirty(_ctx.Node);
-
-        EditorGUILayout.PropertyField(_description);
-        EditorGUILayout.PropertyField(_icon);
-
-        DrawIconPreview();
     }
-
     private void DrawIconPreview()
     {
-        if (_icon.objectReferenceValue is not Sprite sprite)
-            return;
+        GUILayout.Label("Icon", EditorStyles.boldLabel);
+        Rect rect = GUILayoutUtility.GetRect(64, 64, GUILayout.ExpandWidth(false));
 
-        var rect = GUILayoutUtility.GetRect(48, 48);
-        GUI.DrawTexture(rect, sprite.texture);
+        EditorGUI.BeginChangeCheck();
+
+        EditorGUI.ObjectField(
+            rect,
+            _icon,
+            GUIContent.none
+        );
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            _so.ApplyModifiedProperties();
+        }
+
+        if (_icon.objectReferenceValue is Sprite sprite)
+        {
+            var tex = AssetPreview.GetAssetPreview(sprite);
+            if (tex != null)
+                GUI.DrawTexture(rect, tex, ScaleMode.ScaleToFit);
+        }
+
+        GUI.Box(rect, GUIContent.none);
     }
+
 }

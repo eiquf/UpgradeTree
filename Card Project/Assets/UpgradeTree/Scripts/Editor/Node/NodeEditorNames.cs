@@ -76,7 +76,7 @@ public class NodeEditorNames : EditorNames
         EditorGUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
 
-        if (GUILayout.Button("🌸 Flowers yeap! 🌸", GUILayout.Width(100), GUILayout.Height(24)))
+        if (GUILayout.Button("🌸 Flowers! 🌸", GUILayout.Width(100), GUILayout.Height(24)))
         {
             var rect = GUILayoutUtility.GetLastRect();
             _anim.Spawn(new Vector2(rect.center.x, rect.center.y), 15);

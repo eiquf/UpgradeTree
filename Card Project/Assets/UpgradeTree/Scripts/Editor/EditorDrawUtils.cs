@@ -139,33 +139,36 @@ public static class EditorDrawUtils
     /// <param name="accentColor">The accent color used for visual emphasis.</param>
     public static void DrawStatCard(string label, string value, Color accentColor)
     {
-        // Begin drawing the stat card with a minimum width constraint
-        EditorGUILayout.BeginVertical(EditorStyleCache.CardStyle, GUILayout.MinWidth(70));
+        const float CARD_WIDTH = 70f;
 
-        // Draw the accent color bar
-        var accentRect = EditorGUILayout.GetControlRect(false, 3);
+        EditorGUILayout.BeginVertical(
+            EditorStyleCache.CardStyle,
+            GUILayout.Width(CARD_WIDTH),
+            GUILayout.MaxWidth(CARD_WIDTH)
+        );
+
+        var accentRect = EditorGUILayout.GetControlRect(false, 3, GUILayout.Width(CARD_WIDTH));
         EditorGUI.DrawRect(accentRect, accentColor);
 
         GUILayout.Space(4);
 
-        // Set up the style for the value text
         var valueStyle = new GUIStyle(EditorStyles.boldLabel)
         {
             fontSize = 16,
             alignment = TextAnchor.MiddleCenter
         };
-        EditorGUILayout.LabelField(value, valueStyle);
+        EditorGUILayout.LabelField(value, valueStyle, GUILayout.Width(CARD_WIDTH));
 
-        // Set up the style for the label text
         var labelStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
         {
-            fontSize = 9
+            fontSize = 9,
+            alignment = TextAnchor.MiddleCenter
         };
-        EditorGUILayout.LabelField(label, labelStyle);
+        EditorGUILayout.LabelField(label, labelStyle, GUILayout.Width(CARD_WIDTH));
 
-        // End drawing the stat card
         EditorGUILayout.EndVertical();
     }
+
 
     /// <summary>
     /// Draws an empty state UI element with an icon, title, and subtitle. Typically used to display
