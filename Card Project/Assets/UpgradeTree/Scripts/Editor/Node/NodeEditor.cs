@@ -12,9 +12,9 @@ public class NodeEditor : Editor
     private Node _node;
     private NodeContext _ctx;
 
-    private NodeGraphSection _graph;
     private NodeEditorNames _names;
     private NodeInfoSection _info;
+    private NodeGraphSection _graph;
     private NodeRequirementsSection _requirements;
 
     private double _lastUpdateTime;
@@ -40,12 +40,15 @@ public class NodeEditor : Editor
         serializedObject.Update();
         EditorGUILayout.BeginVertical();
 
-        if (_lastUpdateTime == 0)
-        {
-            _lastUpdateTime = EditorApplication.timeSinceStartup;
-            _ctx.UpdateTime(_lastUpdateTime);
-        }
+        UpdateTime();
+        Draw();
 
+        EditorGUILayout.EndVertical();
+        serializedObject.ApplyModifiedProperties();
+    }
+
+    private void Draw()
+    {
         GUILayout.Space(8);
         _names.DrawHeader();
 
@@ -59,7 +62,13 @@ public class NodeEditor : Editor
         _graph.Draw();
 
         _names.DrawFooter();
-        EditorGUILayout.EndVertical();
-        serializedObject.ApplyModifiedProperties();
+    }
+    private void UpdateTime()
+    {
+        if (_lastUpdateTime == 0)
+        {
+            _lastUpdateTime = EditorApplication.timeSinceStartup;
+            _ctx.UpdateTime(_lastUpdateTime);
+        }
     }
 }

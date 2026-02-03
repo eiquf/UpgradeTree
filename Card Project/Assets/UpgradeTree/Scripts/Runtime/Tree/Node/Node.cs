@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Android;
 
-[CreateAssetMenu(fileName = "NewNode", menuName = "NodeTree/Node")]
 public class Node : ScriptableObject
 {
     [Header("Info")]
@@ -16,11 +16,12 @@ public class Node : ScriptableObject
     [Header("Requirements")]
     [SerializeField] private int cost;
     [SerializeField] private int maxLevel;
+    [SerializeField] public bool isLocked = true;
 
     [Header("Other")]
     [SerializeField] private SkillSO stats;
-    [SerializeField] private Vector2 position;
     [SerializeField] private Sprite icon;
+    public Vector2 position;
 
     public NodeID ID => id;
     public string Description => description;

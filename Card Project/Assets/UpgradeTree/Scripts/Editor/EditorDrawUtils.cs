@@ -1,19 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-/// <summary>
-/// A utility class that contains methods for drawing various custom editor UI elements in the Unity Editor.
-/// These methods include drawing gradient rectangles, borders, badges, stat cards, and empty state screens.
-/// </summary>
 public static class EditorDrawUtils
 {
-    /// <summary>
-    /// Draws a vertical gradient rectangle within a given <see cref="Rect"/>.
-    /// The gradient transitions from the specified top color to the bottom color.
-    /// </summary>
-    /// <param name="rect">The rectangle where the gradient should be drawn.</param>
-    /// <param name="top">The top color of the gradient.</param>
-    /// <param name="bottom">The bottom color of the gradient.</param>
     public static void DrawGradientRect(Rect rect, Color top, Color bottom)
     {
         // Number of gradient steps
@@ -30,13 +19,6 @@ public static class EditorDrawUtils
         }
     }
 
-    /// <summary>
-    /// Draws a border around the given <see cref="Rect"/> with the specified color and thickness.
-    /// The border is drawn on all four sides.
-    /// </summary>
-    /// <param name="rect">The rectangle where the border should be drawn.</param>
-    /// <param name="color">The color of the border.</param>
-    /// <param name="thickness">The thickness of the border. Default is 1.</param>
     public static void DrawBorder(Rect rect, Color color, float thickness = 1)
     {
         // Top border
@@ -49,12 +31,6 @@ public static class EditorDrawUtils
         EditorGUI.DrawRect(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
     }
 
-    /// <summary>
-    /// Draws a status badge inside the given rectangle with the specified text and background color.
-    /// The badge is typically used for status indicators.
-    /// </summary>
-    /// <param name="rect">The rectangle where the status badge should be drawn.</param>
-    /// <param name="text">The text to display inside the badge.</param>
     /// <param name="color">The background color of the badge.</param>
     public static void DrawStatusBadge(Rect rect, string text, Color color)
     {
@@ -74,13 +50,6 @@ public static class EditorDrawUtils
         GUI.Label(rect, text, style);
     }
 
-    /// <summary>
-    /// Draws a count badge that displays a numerical value inside a given rectangle.
-    /// The badge is typically used to display counts or numbers (e.g., item counts, notifications).
-    /// </summary>
-    /// <param name="rect">The rectangle where the count badge should be drawn.</param>
-    /// <param name="count">The numerical value to display inside the badge.</param>
-    /// <param name="color">The background color of the badge.</param>
     public static void DrawCountBadge(Rect rect, int count, Color color)
     {
         // Define the badge rect with some padding
@@ -102,12 +71,7 @@ public static class EditorDrawUtils
         GUI.Label(badgeRect, count.ToString(), style);
     }
 
-    /// <summary>
-    /// Draws a mini stat badge with the provided text and accent color.
-    /// This is typically used for small stats or labels.
-    /// </summary>
-    /// <param name="text">The text to display inside the stat badge.</param>
-    /// <param name="color">The accent color used for the badge background and text.</param>
+
     public static void DrawMiniStatBadge(string text, Color color)
     {
         // Create content from the given text and calculate the required size
@@ -129,14 +93,6 @@ public static class EditorDrawUtils
         // Draw the text inside the badge
         GUI.Label(rect, text, style);
     }
-
-    /// <summary>
-    /// Draws a stat card with a label and value, using the specified accent color for visual emphasis.
-    /// This is useful for displaying key statistics or information in a card-like format.
-    /// </summary>
-    /// <param name="label">The label (title) to display on the card.</param>
-    /// <param name="value">The value (e.g., number or text) to display inside the card.</param>
-    /// <param name="accentColor">The accent color used for visual emphasis.</param>
     public static void DrawStatCard(string label, string value, Color accentColor)
     {
         const float CARD_WIDTH = 70f;
@@ -169,26 +125,15 @@ public static class EditorDrawUtils
         EditorGUILayout.EndVertical();
     }
 
-
-    /// <summary>
-    /// Draws an empty state UI element with an icon, title, and subtitle. Typically used to display
-    /// an "empty" state when there are no items or data available.
-    /// </summary>
-    /// <param name="icon">The icon to display at the top of the empty state UI (typically a string or icon image).</param>
-    /// <param name="title">The title text to describe the empty state (e.g., "No Items Available").</param>
-    /// <param name="subtitle">The subtitle text that provides additional context or description of the empty state.</param>
     public static void DrawEmptyState(string icon, string title, string subtitle)
     {
         GUILayout.Space(16);
 
-        // Begin drawing the empty state container
         EditorGUILayout.BeginVertical();
 
-        // Set up the style for the icon
         var iconStyle = new GUIStyle { fontSize = 32, alignment = TextAnchor.MiddleCenter };
         GUILayout.Label(icon, iconStyle, GUILayout.Height(40));
 
-        // Set up the style for the title text
         var titleStyle = new GUIStyle(EditorStyles.boldLabel)
         {
             fontSize = 12,
@@ -197,7 +142,6 @@ public static class EditorDrawUtils
         titleStyle.normal.textColor = new Color(0.7f, 0.7f, 0.7f);
         GUILayout.Label(title, titleStyle);
 
-        // Set up the style for the subtitle text
         var subtitleStyle = new GUIStyle(EditorStyles.miniLabel)
         {
             alignment = TextAnchor.MiddleCenter
@@ -208,5 +152,50 @@ public static class EditorDrawUtils
         EditorGUILayout.EndVertical();
 
         GUILayout.Space(16);
+    }
+}
+
+public sealed class EditorGradientRect : IEditorElement
+{
+    #region Colors
+    private readonly Color _top;
+    private readonly Color _bottom;
+    #endregion
+
+    private readonly int _steps = 10;
+    public EditorGradientRect(Color top, Color bottom, int steps = 10)
+    {
+        _top = top;
+        _bottom = bottom;
+        _steps = steps;
+    }
+    public void Draw(Rect rect)
+    {
+        var stepHeight = rect.height / _steps;
+        for (var i = 0; i < _steps; i++)
+        {
+            var t = (float)i / _steps;
+            var color = Color.Lerp(_top, _bottom, t);
+            var stepRect = new Rect(rect.x, rect.y + i * stepHeight, rect.width, stepHeight + 1);
+            EditorGUI.DrawRect(stepRect, color);
+        }
+    }
+}
+
+public sealed class EditorDrawBorders : IEditorElement
+{
+    private readonly float _thickness;
+    private readonly Color _color;
+    public EditorDrawBorders(Color color, float thickness)
+    {
+        _thickness = thickness;
+        _color = color;
+    }
+    public void Draw(Rect rect)
+    {
+        EditorGUI.DrawRect(new Rect(rect.x, rect.y, rect.width, _thickness), _color);
+        EditorGUI.DrawRect(new Rect(rect.x, rect.yMax - _thickness, rect.width, _thickness), _color);
+        EditorGUI.DrawRect(new Rect(rect.x, rect.y, _thickness, rect.height), _color);
+        EditorGUI.DrawRect(new Rect(rect.xMax - _thickness, rect.y, _thickness, rect.height), _color);
     }
 }

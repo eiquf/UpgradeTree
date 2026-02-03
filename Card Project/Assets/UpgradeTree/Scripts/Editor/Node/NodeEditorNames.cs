@@ -82,9 +82,12 @@ public class NodeEditorNames : EditorNames
             _anim.Spawn(new Vector2(rect.center.x, rect.center.y), 15);
         }
 
+
+
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
     }
+
     protected override void DrawFooterText()
     {
         GUILayout.Space(4);

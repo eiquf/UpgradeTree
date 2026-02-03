@@ -9,10 +9,7 @@ internal sealed class NodeInfoSection
     private readonly SerializedProperty _id;
     private readonly SerializedProperty _description;
     private readonly SerializedProperty _icon;
-
-    private readonly SerializedProperty _idValue;
-
-    private readonly NodeReorderableList _idList;
+    private readonly SerializedProperty _activatedStatus;
 
     private bool _isExpanded;
 
@@ -24,9 +21,8 @@ internal sealed class NodeInfoSection
         _id = so.FindProperty("id");
         _description = so.FindProperty("description");
         _icon = so.FindProperty("icon");
-
-        _idValue = _id?.FindPropertyRelative("Value");
-
+        _icon = so.FindProperty("icon");
+        _activatedStatus = so.FindProperty("activated");
     }
 
     public void Draw(bool showArrow = true)
@@ -46,6 +42,7 @@ internal sealed class NodeInfoSection
     private void DrawContent()
     {
         DrawID();
+        EditorGUILayout.PropertyField(_activatedStatus);
 
         GUILayout.Space(8);
         EditorGUILayout.PropertyField(_description);

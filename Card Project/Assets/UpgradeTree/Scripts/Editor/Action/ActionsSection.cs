@@ -75,7 +75,7 @@ public class ActionsSection : Section
     {
         if (GUILayout.Button("➕ Add Action", GUILayout.Height(28)))
         {
-            _ctx.Tree.AddAction(SampleAction);
+            //_ctx.Tree.Actions.AddAction(SampleAction);
             _anim.Spawn(GUILayoutUtility.GetLastRect().center, 8);
         }
     }
@@ -92,3 +92,4 @@ public class ActionsSection : Section
         Debug.Log($"[Action] Invoked on: {node.name} (ID: {node.ID.Value})");
     }
 }
+

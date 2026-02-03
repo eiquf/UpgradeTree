@@ -9,17 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: NewNode 1
+  m_Script: {fileID: 11500000, guid: 862a83d715323a443885b6813dd560f7, type: 3}
+  m_Name: New Log Node Action
   m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  stats: {fileID: 0}
-  position: {x: 0, y: 0}
-  icon: {fileID: 0}
+  messagePrefix: Node Log
