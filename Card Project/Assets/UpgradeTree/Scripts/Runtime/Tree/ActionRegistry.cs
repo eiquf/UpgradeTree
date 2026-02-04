@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-
-public class ActionRegistry
+﻿namespace Eiquif.UpgradeTree.Runtime.Tree
 {
-    private readonly Dictionary<string, Action<Node>> _events = new();
+    using Eiquif.UpgradeTree.Runtime.Node;
+    using System;
+    using System.Collections.Generic;
 
-    public void Subscribe(string id, Action<Node> callback)
+    public class ActionRegistry
     {
-        if (string.IsNullOrEmpty(id)) return;
-        if (!_events.ContainsKey(id)) _events[id] = delegate { };
-        _events[id] += callback;
-    }
+        private readonly Dictionary<string, Action<Node>> _events = new();
 
-    public void Unsubscribe(string id, Action<Node> callback)
-    {
-        if (_events.ContainsKey(id)) _events[id] -= callback;
-    }
-
-    public void Invoke(string id, Node node)
-    {
-        if (_events.TryGetValue(id, out var action))
+        public void Subscribe(string id, Action<Node> callback)
         {
-            action?.Invoke(node);
+            if (string.IsNullOrEmpty(id)) return;
+            if (!_events.ContainsKey(id)) _events[id] = delegate { };
+            _events[id] += callback;
+        }
+
+        public void Unsubscribe(string id, Action<Node> callback)
+        {
+            if (_events.ContainsKey(id)) _events[id] -= callback;
+        }
+
+        public void Invoke(string id, Node node)
+        {
+            if (_events.TryGetValue(id, out var action))
+            {
+                action?.Invoke(node);
+            }
         }
     }
 }

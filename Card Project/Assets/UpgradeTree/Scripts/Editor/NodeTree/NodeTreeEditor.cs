@@ -1,104 +1,71 @@
-﻿using UnityEditor;
-using UnityEngine;
-
-
-/// <summary>
-/// Custom editor for the <see cref="NodeTree"/> ScriptableObject, providing a custom inspector interface.
-/// </summary>
-[CustomEditor(typeof(NodeTree))]
-public class NodeTreeEditor : Editor
+﻿namespace Eiquif.UpgradeTree.Editor.Tree
 {
-    /// <summary>
-    /// Serialized property representing the lists in the NodeTree.
-    /// </summary>
-    private SerializedProperty _nodesProp;
-    private SerializedProperty _idsProp;
+    using Eiquif.UpgradeTree.Editor.Node;
+    using Runtime.Node;
+    using Runtime.Tree;
+    using UnityEditor;
+    using UnityEngine;
 
-    /// <summary>
-    /// Reference to the target <see cref="NodeTree"/> ScriptableObject.
-    /// </summary>
-    private NodeTree _tree;
-
-    /// <summary>
-    /// Timestamp of the last update to the editor window.
-    /// </summary>
-    private double _lastUpdateTime;
-
-    /// <summary>
-    /// Context containing relevant data for drawing sections in the editor.
-    /// </summary>
-    private NodeTreeContext _context;
-
-    /// <summary>
-    /// Container for storing the names used throughout the editor interface.
-    /// </summary>
-    private EditorNames _names;
-
-    /// <summary>
-    /// Section for displaying node-related information in the custom editor.
-    /// </summary>
-    private Section _node;
-    private Section _action;
-    private Section _summary;
-    private Section _id;
-
-    /// <summary>
-    /// Initializes the custom editor, setting up serialized properties and sections.
-    /// </summary>
-    private void OnEnable()
+    [CustomEditor(typeof(NodeTree))]
+    public class NodeTreeEditor : Editor
     {
-        // Cast the target to the appropriate type
-        _tree = (NodeTree)target;
+        private SerializedProperty _nodesProp;
+        private SerializedProperty _idsProp;
 
-        // Find the serialized properties for Nodes and IDs
-        _nodesProp = serializedObject.FindProperty("Nodes");
-        _idsProp = serializedObject.FindProperty("IDs");
+        private NodeTree _tree;
 
-        // Create a new serialized object for the editor context
-        var SO = new SerializedObject(this);
-        _context = new NodeTreeContext(_tree, SO, _nodesProp, _idsProp);
+        private NodeTreeContext _context;
 
-        _node = new NodeSection(_context);
-        _action = new ActionsSection(_context);
-        _summary = new SummarySection(_context);
-        _id = new IDSection(_context);
+        private EditorNames _names;
 
-        _names = new NodeTreeEditorNames(_context, _tree.name);
-    }
+        #region Section
+        private Section _node;
+        private Section _summary;
+        private Section _id;
+        #endregion
 
-    /// <summary>
-    /// Draws the custom inspector GUI for the <see cref="NodeTree"/>.
-    /// </summary>
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
+        private void OnEnable()
+        {
+            _tree = (NodeTree)target;
 
-        if (_lastUpdateTime == 0)
-            _lastUpdateTime = EditorApplication.timeSinceStartup;
+            _nodesProp = serializedObject.FindProperty("Nodes");
+            _idsProp = serializedObject.FindProperty("IDs");
 
-        EditorGUILayout.BeginVertical();
-        GUILayout.Space(8);
+            var SO = new SerializedObject(this);
+            _context = new NodeTreeContext(_tree, SO, _nodesProp, _idsProp);
 
-        _names.DrawHeader();
+            _node = new NodeSection(_context);
+            _summary = new SummarySection(_context);
+            _id = new IDSection(_context);
 
-        GUILayout.Space(12);
+            _names = new NodeTreeEditorNames(_context, _tree.name);
+        }
 
-        _id.Draw();
-        GUILayout.Space(8);
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
 
-        _node.Draw();
-        GUILayout.Space(8);
+            EditorGUILayout.BeginVertical();
+            GUILayout.Space(8);
 
-        _action.Draw();
-        GUILayout.Space(8);
+            _names.DrawHeader();
 
-        _summary.Draw();
-        GUILayout.Space(12);
+            GUILayout.Space(12);
 
-        _names.DrawFooter();
+            _id.Draw();
+            GUILayout.Space(8);
 
-        EditorGUILayout.EndVertical();
+            _node.Draw();
+            GUILayout.Space(8);
 
-        serializedObject.ApplyModifiedProperties();
+            _summary.Draw();
+            GUILayout.Space(12);
+
+            _names.DrawFooter();
+
+            EditorGUILayout.EndVertical();
+
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }

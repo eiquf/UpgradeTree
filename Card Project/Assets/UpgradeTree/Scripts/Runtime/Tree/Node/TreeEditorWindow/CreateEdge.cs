@@ -1,10 +1,8 @@
-﻿using Unity.VisualScripting.Antlr3.Runtime.Tree;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
-
-namespace Eiquif.UpgradeTree.Editor.TreeWindow
+﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
 {
+    using Runtime.Tree;
+    using UnityEditor.Experimental.GraphView;
+
     public class CreateEdge : IElement<Edge>
     {
         private readonly NodeTree _tree;
@@ -26,49 +24,4 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
             EdgeUtils.MarkDirty(_tree, from, to);
         }
     }
-
-    static class EdgeUtils
-    {
-        public static bool TryGetNodes(
-            Edge edge,
-            out Node from,
-            out Node to)
-        {
-            from = null;
-            to = null;
-
-            if (edge?.output?.node is not UpgradeNodeView fromView)
-                return false;
-
-            if (edge?.input?.node is not UpgradeNodeView toView)
-                return false;
-
-            from = fromView.Data;
-            to = toView.Data;
-            return true;
-        }
-
-        public static void RecordUndo(
-            NodeTree tree,
-            Node from,
-            Node to,
-            string action)
-        {
-            Undo.RecordObjects(
-                new Object[] { tree, from, to },
-                action
-            );
-        }
-
-        public static void MarkDirty(
-            NodeTree tree,
-            Node from,
-            Node to)
-        {
-            EditorUtility.SetDirty(tree);
-            EditorUtility.SetDirty(from);
-            EditorUtility.SetDirty(to);
-        }
-    }
-
 }

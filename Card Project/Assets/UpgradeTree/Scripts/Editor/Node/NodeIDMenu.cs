@@ -1,67 +1,72 @@
-﻿using UnityEditor;
-using UnityEngine;
-
-internal sealed class NodeIDMenu : INodeIDMenu
+﻿namespace Eiquif.UpgradeTree.Editor
 {
-    private readonly NodeTree _tree;
+    using Eiquif.UpgradeTree.Runtime.Tree;
+    using UnityEditor;
+    using UnityEngine;
+    using RuntimeNode = Runtime.Node.Node;
 
-    public NodeIDMenu() => _tree = GetNodeTree();
-
-    public void Show(Node node)
+    internal sealed class NodeIDMenu : INodeIDMenu
     {
-        var menu = new GenericMenu();
+        private readonly NodeTree _tree;
 
-        DrawClear(menu, node);
-        menu.AddSeparator(string.Empty);
-        DrawIDs(menu, node);
+        public NodeIDMenu() => _tree = GetNodeTree();
 
-        menu.ShowAsContext();
-    }
-
-    private static void DrawClear(GenericMenu menu, Node node)
-    {
-        menu.AddItem(
-            new GUIContent("✕  Clear ID"),
-            string.IsNullOrEmpty(node.ID.Value),
-            () =>
-            {
-                Undo.RecordObject(node, "Clear Node ID");
-                node.ID.Value = string.Empty;
-                EditorUtility.SetDirty(node);
-            });
-    }
-
-    private void DrawIDs(GenericMenu menu, Node node)
-    {
-        if (_tree?.IDs == null || _tree.IDs.Count == 0)
+        public void Show(RuntimeNode node)
         {
-            menu.AddDisabledItem(
-                new GUIContent("No IDs available — add some above"));
-            return;
+            var menu = new GenericMenu();
+
+            DrawClear(menu, node);
+            menu.AddSeparator(string.Empty);
+            DrawIDs(menu, node);
+
+            menu.ShowAsContext();
         }
 
-        foreach (var id in _tree.IDs)
+        private static void DrawClear(GenericMenu menu, RuntimeNode node)
         {
-            var captured = id;
-            var selected = node.ID.Value == id;
-
             menu.AddItem(
-                new GUIContent((selected ? "✓  " : "    ") + id),
-                selected,
+                new GUIContent("✕  Clear ID"),
+                string.IsNullOrEmpty(node.ID.Value),
                 () =>
                 {
-                    Undo.RecordObject(node, "Set Node ID");
-                    node.ID.Value = captured;
+                    Undo.RecordObject(node, "Clear Node ID");
+                    node.ID.Value = string.Empty;
                     EditorUtility.SetDirty(node);
                 });
         }
-    }
-    private NodeTree GetNodeTree()
-    {
-        string[] guids = AssetDatabase.FindAssets("t:NodeTree");
-        if (guids.Length == 0) return null;
 
-        string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-        return AssetDatabase.LoadAssetAtPath<NodeTree>(path);
+        private void DrawIDs(GenericMenu menu, RuntimeNode node)
+        {
+            if (_tree?.IDs == null || _tree.IDs.Count == 0)
+            {
+                menu.AddDisabledItem(
+                    new GUIContent("No IDs available — add some above"));
+                return;
+            }
+
+            foreach (var id in _tree.IDs)
+            {
+                var captured = id;
+                var selected = node.ID.Value == id;
+
+                menu.AddItem(
+                    new GUIContent((selected ? "✓  " : "    ") + id),
+                    selected,
+                    () =>
+                    {
+                        Undo.RecordObject(node, "Set Node ID");
+                        node.ID.Value = captured;
+                        EditorUtility.SetDirty(node);
+                    });
+            }
+        }
+        private NodeTree GetNodeTree()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:NodeTree");
+            if (guids.Length == 0) return null;
+
+            string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            return AssetDatabase.LoadAssetAtPath<NodeTree>(path);
+        }
     }
 }

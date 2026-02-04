@@ -1,4 +1,8 @@
-﻿public interface INodeIDMenu
+﻿namespace Eiquif.UpgradeTree.Editor
 {
-    void Show(Node node);
+    using RuntimeNode = Runtime.Node.Node;
+    public interface INodeIDMenu
+    {
+        void Show(RuntimeNode node);
+    }
 }

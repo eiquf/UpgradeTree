@@ -1,7 +1,9 @@
-using UnityEngine;
-
-namespace Eiquif.UpgradeTree
+namespace Eiquif.UpgradeTree.Runtime
 {
+    using Eiquif.UpgradeTree.Runtime.Tree;
+    using Nodee = Runtime.Node.Node;
+    using UnityEngine;
+
     public class Player : MonoBehaviour
     {
         private UpgradeTreeRuntime runtime;
@@ -19,7 +21,7 @@ namespace Eiquif.UpgradeTree
 
         void OnHpChanged(object data)
         {
-            var node = (Node)data;
+            var node = (Nodee)data;
             Debug.Log($"HP изменилось: {node.name}");
         }
     }

@@ -1,29 +1,32 @@
-﻿using UnityEditor;
-
-public class NodeContext : ContextSystem
+﻿namespace Eiquif.UpgradeTree.Runtime.Node
 {
-    public SerializedObject SerializedObject { get; }
-    public Node Node { get; }
-    public NodeTree Tree { get; }
-    public SerializedProperty NextProp { get; }
-    public SerializedProperty PrerequisiteProp { get; }
-
-    public double LastUpdateTime { get; private set; }
-
-    public NodeContext(
-        SerializedObject so,
-        Node node,
-        SerializedProperty next,
-        SerializedProperty prerequisite)
+    using Runtime.Tree;
+    using Editor;
+    using UnityEditor;
+    public class NodeContext : ContextSystem
     {
+        public SerializedObject SerializedObject { get; }
+        public Node Node { get; }
+        public SerializedProperty NextProp { get; }
+        public SerializedProperty PrerequisiteProp { get; }
 
-        IDMenu = new NodeIDMenu();
+        public double LastUpdateTime { get; private set; }
 
-        SerializedObject = so;
-        Node = node;
-        NextProp = next;
-        PrerequisiteProp = prerequisite;
+        public NodeContext(
+            SerializedObject so,
+            Node node,
+            SerializedProperty next,
+            SerializedProperty prerequisite)
+        {
+
+            IDMenu = new NodeIDMenu();
+
+            SerializedObject = so;
+            Node = node;
+            NextProp = next;
+            PrerequisiteProp = prerequisite;
+        }
+
+        public void UpdateTime(double time) => LastUpdateTime = time;
     }
-
-    public void UpdateTime(double time) => LastUpdateTime = time;
 }

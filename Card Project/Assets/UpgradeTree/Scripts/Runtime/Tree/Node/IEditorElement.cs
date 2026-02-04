@@ -1,6 +1,9 @@
-﻿using UnityEngine;
-
-public interface IEditorElement
+﻿namespace Eiquif.UpgradeTree.Editor
 {
-    void Draw(Rect rect);
+    using UnityEngine;
+
+    public interface IEditorElement
+    {
+        void Draw(Rect rect);
+    }
 }

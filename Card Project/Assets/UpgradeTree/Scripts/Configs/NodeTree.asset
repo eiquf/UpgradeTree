@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7960741752826796748
+--- !u!114 &-4934151084886321505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,22 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
+  m_Name: Node_1
   m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
+  _id:
+    Value: NewID_0
+  _description: 
+  _displayName: 
   NextNodes:
-  - {fileID: -7287878983298951500}
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: -203.19997, y: 15.199982}
---- !u!114 &-7287878983298951500
+  - {fileID: 4195226968200474120}
+  PrerequisiteNodes:
+  - {fileID: 7240467079309072010}
+  - {fileID: 453252012985786685}
+  - {fileID: -2005155903212264355}
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  position: {x: -140, y: 46.399994}
+--- !u!114 &-2768923042894192449
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -37,21 +41,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
   m_Name: Node
   m_EditorClassIdentifier: 
-  id:
+  _id:
     Value: 
-  description: 
-  displayName: 
+  _description: 
+  _displayName: 
   NextNodes: []
   PrerequisiteNodes:
-  - {fileID: -7960741752826796748}
-  - {fileID: -6367749430627723675}
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: -101.600006, y: -115.19998}
---- !u!114 &-6367749430627723675
+  - {fileID: 4195226968200474120}
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 0}
+  position: {x: 291.99994, y: 46.399994}
+--- !u!114 &-2005155903212264355
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,115 +67,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
   m_Name: Node
   m_EditorClassIdentifier: 
-  id:
+  _id:
     Value: 
-  description: 
-  displayName: 
+  _description: 
+  _displayName: 
   NextNodes:
-  - {fileID: -7287878983298951500}
+  - {fileID: -4934151084886321505}
   PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: -75.99993, y: 15.200012}
---- !u!114 &-5698479480572174177
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
-  m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 155.19998, y: -115.19999}
---- !u!114 &-4722407184258539508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
-  m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: -75.9999, y: 127.199974}
---- !u!114 &-4709034570749658050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
-  m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 102.000015, y: 15.199983}
---- !u!114 &-4279718889073252841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
-  m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 186, y: 127.19999}
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 0}
+  position: {x: -368.8, y: -61.59999}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,23 +94,16 @@ MonoBehaviour:
   m_Name: NodeTree
   m_EditorClassIdentifier: 
   Nodes:
-  - {fileID: 6881905665113119865}
-  - {fileID: -5698479480572174177}
-  - {fileID: 7732246221659055895}
-  - {fileID: -7287878983298951500}
-  - {fileID: -7960741752826796748}
-  - {fileID: -6367749430627723675}
-  - {fileID: -4722407184258539508}
-  - {fileID: 1180998966631799809}
-  - {fileID: -4709034570749658050}
-  - {fileID: -4279718889073252841}
-  - {fileID: 9070462690058121861}
+  - {fileID: -4934151084886321505}
+  - {fileID: 4195226968200474120}
+  - {fileID: -2768923042894192449}
+  - {fileID: 7240467079309072010}
+  - {fileID: 453252012985786685}
+  - {fileID: -2005155903212264355}
   IDs:
+  - NewID_0
   - NewID_1
-  - NewID_1r
-  - NewID_2
-  - NewID_3
---- !u!114 &1180998966631799809
+--- !u!114 &453252012985786685
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,19 +115,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
   m_Name: Node
   m_EditorClassIdentifier: 
-  id:
+  _id:
     Value: 
-  description: 
-  displayName: 
+  _description: 
+  _displayName: 
+  NextNodes:
+  - {fileID: -4934151084886321505}
+  PrerequisiteNodes: []
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 0}
+  position: {x: -368.8, y: 46.399994}
+--- !u!114 &3270840629742635772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
+  m_Name: Node_0
+  m_EditorClassIdentifier: 
+  _id:
+    Value: 
+  _description: 
+  _displayName: 
   NextNodes: []
   PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 51.599995, y: 127.2}
---- !u!114 &5772507871458599840
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  position: {x: 0, y: 0}
+--- !u!114 &4195226968200474120
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,19 +166,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
   m_Name: Node
   m_EditorClassIdentifier: 
-  id:
+  _id:
+    Value: NewID_1
+  _description: 
+  _displayName: 
+  NextNodes:
+  - {fileID: -2768923042894192449}
+  PrerequisiteNodes:
+  - {fileID: -4934151084886321505}
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 0}
+  position: {x: 80, y: 46.399994}
+--- !u!114 &6419416834733624543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
+  m_Name: Node_1
+  m_EditorClassIdentifier: 
+  _id:
     Value: 
-  description: 
-  displayName: 
+  _description: 
+  _displayName: 
   NextNodes: []
   PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 205.99995, y: 165.59998}
---- !u!114 &6881905665113119865
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  position: {x: 0, y: 0}
+--- !u!114 &7240467079309072010
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -261,63 +218,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
   m_Name: Node
   m_EditorClassIdentifier: 
-  id:
+  _id:
     Value: 
-  description: 
-  displayName: 
-  NextNodes: []
+  _description: 
+  _displayName: 
+  NextNodes:
+  - {fileID: -4934151084886321505}
   PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 236.36978, y: 15.199989}
---- !u!114 &7732246221659055895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
-  m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 25.600012, y: -115.20003}
---- !u!114 &9070462690058121861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
-  m_Name: Node
-  m_EditorClassIdentifier: 
-  id:
-    Value: 
-  description: 
-  displayName: 
-  NextNodes: []
-  PrerequisiteNodes: []
-  cost: 0
-  maxLevel: 0
-  isLocked: 1
-  stats: {fileID: 0}
-  icon: {fileID: 0}
-  position: {x: 287.60004, y: -115.19999}
+  _parent: {fileID: 0}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 0}
+  position: {x: -368.80002, y: 158.4}

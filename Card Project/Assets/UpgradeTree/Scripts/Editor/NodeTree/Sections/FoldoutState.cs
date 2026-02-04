@@ -1,18 +1,21 @@
-﻿using System.Collections.Generic;
-
-public class FoldoutState
+﻿namespace Eiquif.UpgradeTree.Editor.Node
 {
-    private readonly Dictionary<string, bool> _state = new();
+    using System.Collections.Generic;
 
-    public bool Get(string key, bool defaultValue = false)
+    public class FoldoutState
     {
-        if (!_state.ContainsKey(key))
-            _state[key] = defaultValue;
+        private readonly Dictionary<string, bool> _state = new();
 
-        return _state[key];
+        public bool Get(string key, bool defaultValue = false)
+        {
+            if (!_state.ContainsKey(key))
+                _state[key] = defaultValue;
+
+            return _state[key];
+        }
+
+        public void Toggle(string key) => _state[key] = !Get(key);
+
+        public void Set(string key, bool value) => _state[key] = value;
     }
-
-    public void Toggle(string key) => _state[key] = !Get(key);
-
-    public void Set(string key, bool value) => _state[key] = value;
 }

@@ -1,7 +1,10 @@
-﻿public abstract class UpgradeTreeRuntimeSystem
+﻿namespace Eiquif.UpgradeTree.Runtime.Tree
 {
-    protected NodeTree Tree;
+    public abstract class UpgradeTreeRuntimeSystem
+    {
+        protected NodeTree Tree;
 
-    public UpgradeTreeRuntimeSystem(NodeTree tree) => Tree = tree;
-    public abstract void Execute();
+        public UpgradeTreeRuntimeSystem(NodeTree tree) => Tree = tree;
+        public abstract void Execute();
+    }
 }

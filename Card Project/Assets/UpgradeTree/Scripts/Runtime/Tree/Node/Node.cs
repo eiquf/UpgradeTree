@@ -1,32 +1,32 @@
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Android;
-
-public class Node : ScriptableObject
+namespace Eiquif.UpgradeTree.Runtime.Node
 {
-    [Header("Info")]
-    [SerializeField] private NodeID id;
-    [SerializeField, TextArea(3, 6)] private string description;
-    [SerializeField] private string displayName;
+    using System.Collections.Generic;
+    using UnityEngine;
 
-    [Header("Graph")]
-    public List<Node> NextNodes = new();
-    public List<Node> PrerequisiteNodes = new();
+    public class Node : ScriptableObject
+    {
+        [Header("Info")]
+        [SerializeField] private NodeID _id;
+        [SerializeField, TextArea(3, 6)] private string _description;
+        [SerializeField] private string _displayName;
 
-    [Header("Requirements")]
-    [SerializeField] private int cost;
-    [SerializeField] private int maxLevel;
-    [SerializeField] public bool isLocked = true;
+        [Header("Graph")]
+        public List<Node> NextNodes = new();
+        public List<Node> PrerequisiteNodes = new();
 
-    [Header("Other")]
-    [SerializeField] private SkillSO stats;
-    [SerializeField] private Sprite icon;
-    public Vector2 position;
+        [Header("Requirements")]
+        [SerializeField] private Node _parent;
+        [SerializeField] private int _cost;
+        [SerializeField] private int _parentLevelUnlock;
+        [SerializeField] public bool _unlockIfParentMax = true;
 
-    public NodeID ID => id;
-    public string Description => description;
-    public string Name => displayName;
-    public Sprite Icon => icon;
-    public int Cost => cost;
-    public int MaxLevel => maxLevel;
+        [Header("Other")]
+        [SerializeField] private SkillSO _stats;
+        [SerializeField] private Sprite _icon;
+        public Vector2 position;
+
+        public NodeID ID => _id;
+        public string Name => _displayName;
+        public Sprite Icon => _icon;
+    }
 }

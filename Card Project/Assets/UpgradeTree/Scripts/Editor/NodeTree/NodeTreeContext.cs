@@ -1,40 +1,44 @@
-﻿using UnityEditor;
-using UnityEngine;
-
-public class NodeTreeContext : ContextSystem
+﻿namespace Eiquif.UpgradeTree.Runtime.Node
 {
-    public NodeTree Tree { get; }
-    public SerializedObject SerializedObject { get; }
-    public SerializedProperty NodesProp { get; }
-    public SerializedProperty IDsProp { get; }
+    using Editor;
+    using Runtime.Tree;
+    using UnityEditor;
+    using UnityEngine;
 
-    public double LastUpdateTime { get; private set; }
-
-    public NodeTreeContext(
-        NodeTree tree,
-        SerializedObject so,
-        SerializedProperty nodes,
-        SerializedProperty ids)
+    public class NodeTreeContext : ContextSystem
     {
-        Tree = tree;
-        SerializedObject = so;
-        NodesProp = nodes;
-        IDsProp = ids;
+        public SerializedObject SerializedObject { get; }
+        public SerializedProperty NodesProp { get; }
+        public SerializedProperty IDsProp { get; }
 
-        IDMenu = new NodeIDMenu();
+        public double LastUpdateTime { get; private set; }
 
-        if (IDsProp == null)
-            Debug.LogError("[NodeTreeEditor] IDsProp is null!");
+        public NodeTreeContext(
+            NodeTree tree,
+            SerializedObject so,
+            SerializedProperty nodes,
+            SerializedProperty ids)
+        {
+            NodeTree = tree;
+            SerializedObject = so;
+            NodesProp = nodes;
+            IDsProp = ids;
 
-        if (NodesProp == null)
-            Debug.LogError("[NodeTreeEditor] NodesProp is null!");
+            IDMenu = new NodeIDMenu();
+
+            if (IDsProp == null)
+                Debug.LogError("[NodeTreeEditor] IDsProp is null!");
+
+            if (NodesProp == null)
+                Debug.LogError("[NodeTreeEditor] NodesProp is null!");
+        }
+
+        public void Record(string label)
+        {
+            Undo.RecordObject(Tree, label);
+            EditorUtility.SetDirty(Tree);
+        }
+
+        public void UpdateTime(double time) => LastUpdateTime = time;
     }
-
-    public void Record(string label)
-    {
-        Undo.RecordObject(Tree, label);
-        EditorUtility.SetDirty(Tree);
-    }
-
-    public void UpdateTime(double time) => LastUpdateTime = time;
 }

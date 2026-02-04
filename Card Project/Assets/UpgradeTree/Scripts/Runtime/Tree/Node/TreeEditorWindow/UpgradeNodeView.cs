@@ -1,17 +1,21 @@
-﻿using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
-using UnityEngine.UIElements;
-
-namespace Eiquif.UpgradeTree.Editor.TreeWindow
+﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
 {
-    public class UpgradeNodeView : UnityEditor.Experimental.GraphView.Node
+    using UnityEditor;
+    using UnityEditor.Experimental.GraphView;
+    using UnityEditor.UIElements;
+    using UnityEngine;
+    using UnityEngine.UIElements;
+    using GraphNode = UnityEditor.Experimental.GraphView.Node;
+    using RuntimeNode = Runtime.Node.Node;
+
+    public class UpgradeNodeView : GraphNode
     {
-        public Node Data { get; }
+        public RuntimeNode Data { get; }
+        private Foldout _foldout;
         public Port In { get; }
         public Port Out { get; }
 
-        public UpgradeNodeView(Node data)
+        public UpgradeNodeView(RuntimeNode data)
         {
             Data = data;
 
@@ -19,6 +23,8 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
             viewDataKey = data.GetInstanceID().ToString();
 
             SetPosition(new Rect(data.position, new Vector2(220, 130)));
+
+            CreateFoldout();
 
             if (data.Icon != null)
             {
@@ -64,6 +70,19 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
             Data.position = newPos.position;
             EditorUtility.SetDirty(Data);
         }
+        private void CreateFoldout()
+        {
+            _foldout = new Foldout()
+            {
+                text = "Node settings",
+                value = false
+            };
+
+            var SO = new SerializedObject(Data);
+
+            _foldout.Add(new InspectorElement(SO));
+
+            extensionContainer.Add(_foldout);
+        }
     }
 }
-

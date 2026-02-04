@@ -1,11 +1,11 @@
-﻿using UnityEditor.Experimental.GraphView;
-
-namespace Eiquif.UpgradeTree.Editor.TreeWindow
+﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
 {
+    using UnityEditor.Experimental.GraphView;
+    using Tree = Runtime.Tree.NodeTree;
     public class RemoveEdge : IElement<Edge>
     {
-        private readonly NodeTree _tree;
-        public RemoveEdge(NodeTree tree) => _tree = tree;
+        private readonly Tree _tree;
+        public RemoveEdge(Tree tree) => _tree = tree;
 
         public void Execute(Edge edge)
         {
@@ -23,5 +23,4 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
             EdgeUtils.MarkDirty(_tree, from, to);
         }
     }
-
 }
