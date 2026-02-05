@@ -1,11 +1,11 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
-{
-    using System.Collections.Generic;
-    using System.Linq;
-    using UnityEditor;
-    using UnityEngine;
-    using Runtime.Node;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
+using Eiquif.UpgradeTree.Runtime;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public class NodeValidationDrawer
     {
         private readonly EditorFlowerAnimation _anim = new();
@@ -14,13 +14,10 @@
         {
             if (nodes == null || nodes.Count == 0) return;
 
-            // 1. Пустые слоты (null в списке)
             var nullCount = nodes.Count(n => n == null);
 
-            // 2. Узлы с отсутствующим ID (только для существующих объектов)
             var noIdCount = nodes.Count(n => n != null && string.IsNullOrEmpty(n.ID.Value));
 
-            // 3. Реальные дубликаты (одинаковый ID у разных или тех же объектов)
             var duplicateGroups = nodes
                 .Where(n => n != null && !string.IsNullOrEmpty(n.ID.Value))
                 .GroupBy(n => n.ID.Value)
@@ -46,7 +43,6 @@
 
             GUILayout.Space(8);
 
-            // Кнопка очистки пустых ссылок
             if (nullCount > 0)
             {
                 if (GUILayout.Button("🧹 Clean Empty Slots", GUILayout.Height(24)))
@@ -57,7 +53,6 @@
                 }
             }
 
-            // Кнопка удаления дубликатов (теперь безопасная)
             if (duplicateCount > 0)
             {
                 if (GUILayout.Button("👯 Remove Duplicates", GUILayout.Height(24)))
@@ -72,14 +67,14 @@
                     {
                         if (node == null)
                         {
-                            uniqueList.Add(null); // Сохраняем null, если пользователь не нажал Clean
+                            uniqueList.Add(null); 
                             continue;
                         }
 
                         string id = node.ID.Value;
                         if (string.IsNullOrEmpty(id))
                         {
-                            uniqueList.Add(node); // Узлы без ID не считаем дубликатами здесь
+                            uniqueList.Add(node); 
                             continue;
                         }
 

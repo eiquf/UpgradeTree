@@ -1,8 +1,8 @@
-﻿namespace Eiquif.UpgradeTree.Editor
-{
-    using UnityEditor;
-    using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public static class EditorDrawUtils
     {
         public static void DrawGradientRect(Rect rect, Color top, Color bottom)

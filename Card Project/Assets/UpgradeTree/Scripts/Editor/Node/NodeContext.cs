@@ -1,7 +1,7 @@
-﻿namespace Eiquif.UpgradeTree.Runtime.Node
+﻿namespace Eiquif.UpgradeTree.Runtime
 {
-    using Runtime.Tree;
-    using Editor;
+    using Eiquif.UpgradeTree.Runtime;
+    using Eiquif.UpgradeTree.Editor;
     using UnityEditor;
     public class NodeContext : ContextSystem
     {

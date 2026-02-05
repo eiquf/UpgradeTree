@@ -1,8 +1,8 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
+﻿namespace Eiquif.UpgradeTree.Editor
 {
+    using Eiquif.UpgradeTree.Runtime;
     using UnityEditor;
     using UnityEngine;
-    using Runtime.Node;
 
     [CustomEditor(typeof(Node))]
     public class NodeEditor : Editor
@@ -13,10 +13,8 @@
 
         private SerializedObject _so;
         #endregion
-
         private Node _node;
         private NodeContext _ctx;
-
         #region Sections
         private NodeEditorNames _names;
         private NodeInfoSection _info;
@@ -25,22 +23,7 @@
         #endregion
 
         private double _lastUpdateTime;
-        private void OnEnable()
-        {
-            _node = (Node)target;
-            _so = new SerializedObject(target);
-
-            _nextProp = serializedObject.FindProperty("NextNodes");
-            _prerequisiteProp = serializedObject.FindProperty("PrerequisiteNodes");
-
-            _ctx = new NodeContext(_so, _node, _nextProp, _prerequisiteProp);
-
-            _graph = new NodeGraphSection(_ctx);
-            _names = new(_ctx, _node.name);
-
-            _info = new NodeInfoSection(serializedObject, _ctx);
-            _requirements = new NodeRequirementsSection(serializedObject);
-        }
+        private void OnEnable() => Init();
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -68,6 +51,30 @@
 
             _names.DrawFooter();
         }
+        #region Initilaize
+        private void Init()
+        {
+            InitProperties();
+            _ctx = new NodeContext(_so, _node, _nextProp, _prerequisiteProp);
+            InitSections();
+        }
+        private void InitProperties()
+        {
+            _node = (Node)target;
+            _so = new SerializedObject(target);
+
+            _nextProp = serializedObject.FindProperty("NextNodes");
+            _prerequisiteProp = serializedObject.FindProperty("PrerequisiteNodes");
+        }
+        private void InitSections()
+        {
+            _graph = new NodeGraphSection(_ctx);
+            _names = new(_ctx, _node.name);
+
+            _info = new NodeInfoSection(serializedObject, _ctx);
+            _requirements = new NodeRequirementsSection(serializedObject);
+        }
+        #endregion
         private void UpdateTime()
         {
             if (_lastUpdateTime == 0)

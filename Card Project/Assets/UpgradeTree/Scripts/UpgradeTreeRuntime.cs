@@ -1,8 +1,8 @@
-namespace Eiquif.UpgradeTree.Runtime.Tree
+using System;
+using UnityEngine;
+
+namespace Eiquif.UpgradeTree.Runtime
 {
-    using System;
-    using UnityEngine;
-    using Runtime.Node;
     public class UpgradeTreeRuntime : MonoBehaviour
     {
         [SerializeField] private GameObject _nodeUIPrefab;

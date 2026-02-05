@@ -1,13 +1,20 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
+﻿#nullable enable
+/// <summary>
+/// UI element that participates in rendering one list item.
+/// USes as step of Draw pipeline
+/// </summary>
+public interface IElement<T> where T : class
 {
-#nullable enable
-    interface IElement<T> where T : class
-    {
-        void Execute(T? t);
-    }
+    /// <summary>
+    /// Draw element
+    /// </summary>
+    void Execute(T? context);
+}
 
-    interface IElement
-    {
-        void Execute();
-    }
+/// <summary>
+/// UI element without context
+/// </summary>
+public interface IElement
+{
+    void Execute();
 }

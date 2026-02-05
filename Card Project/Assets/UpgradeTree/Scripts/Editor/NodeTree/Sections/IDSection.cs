@@ -1,11 +1,15 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
-{
-    using Eiquif.UpgradeTree.Runtime.Node;
-    using System.Linq;
-    using UnityEditor;
-    using UnityEditorInternal;
-    using UnityEngine;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using System.Linq;
+using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public class IDSection : Section
     {
         private readonly NodeTreeContext _ctx;

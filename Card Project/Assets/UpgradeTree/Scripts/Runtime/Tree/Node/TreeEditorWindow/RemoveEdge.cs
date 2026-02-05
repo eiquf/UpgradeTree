@@ -1,11 +1,16 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor.Experimental.GraphView;
+
+namespace Eiquif.UpgradeTree.Editor
 {
-    using UnityEditor.Experimental.GraphView;
-    using Tree = Runtime.Tree.NodeTree;
     public class RemoveEdge : IElement<Edge>
     {
-        private readonly Tree _tree;
-        public RemoveEdge(Tree tree) => _tree = tree;
+        private readonly NodeTree _tree;
+        public RemoveEdge(NodeTree tree) => _tree = tree;
 
         public void Execute(Edge edge)
         {

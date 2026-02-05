@@ -1,17 +1,16 @@
-﻿namespace Eiquif.UpgradeTree.Editor
-{
-    using Eiquif.UpgradeTree.Runtime.Tree;
-    using UnityEditor;
-    using UnityEngine;
-    using RuntimeNode = Runtime.Node.Node;
+﻿using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     internal sealed class NodeIDMenu : INodeIDMenu
     {
         private readonly NodeTree _tree;
 
         public NodeIDMenu() => _tree = GetNodeTree();
 
-        public void Show(RuntimeNode node)
+        public void Show(Node node)
         {
             var menu = new GenericMenu();
 
@@ -22,7 +21,7 @@
             menu.ShowAsContext();
         }
 
-        private static void DrawClear(GenericMenu menu, RuntimeNode node)
+        private static void DrawClear(GenericMenu menu, Node node)
         {
             menu.AddItem(
                 new GUIContent("✕  Clear ID"),
@@ -35,7 +34,7 @@
                 });
         }
 
-        private void DrawIDs(GenericMenu menu, RuntimeNode node)
+        private void DrawIDs(GenericMenu menu, Node node)
         {
             if (_tree?.IDs == null || _tree.IDs.Count == 0)
             {

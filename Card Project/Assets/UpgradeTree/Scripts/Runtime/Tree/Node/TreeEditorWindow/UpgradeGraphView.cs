@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
-using System.Collections.Generic;
 
-namespace Eiquif.UpgradeTree.Editor.TreeWindow
+namespace Eiquif.UpgradeTree.Editor
 {
     public class UpgradeGraphView : GraphView
     {
@@ -29,7 +29,6 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
                 OnSelect?.Invoke(selection.OfType<UpgradeNodeView>().FirstOrDefault());
             });
         }
-
         private GraphViewChange OnGraphViewChanged(GraphViewChange change)
         {
             if (change.edgesToCreate != null)
@@ -50,7 +49,6 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
 
             return change;
         }
-
         public void ClearGraph()
         {
             graphElements
@@ -58,7 +56,6 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
                 .ToList()
                 .ForEach(RemoveElement);
         }
-
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter _)
         {
             return ports.Where(p =>
@@ -69,5 +66,3 @@ namespace Eiquif.UpgradeTree.Editor.TreeWindow
         }
     }
 }
-
-

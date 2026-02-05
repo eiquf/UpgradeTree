@@ -1,45 +1,38 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
-{
-    using UnityEditor;
-    using UnityEditor.Experimental.GraphView;
-    using UnityEditor.UIElements;
-    using UnityEngine;
-    using UnityEngine.UIElements;
-    using GraphNode = UnityEditor.Experimental.GraphView.Node;
-    using RuntimeNode = Runtime.Node.Node;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using GraphNode = UnityEditor.Experimental.GraphView.Node;
+using RuntimeNode = Eiquif.UpgradeTree.Runtime.Node;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public class UpgradeNodeView : GraphNode
     {
         public RuntimeNode Data { get; }
-        private Foldout _foldout;
+
+        private readonly GraphNode _graph;
         public Port In { get; }
         public Port Out { get; }
 
+        private IElement<RuntimeNode> _foldoutView;
+        private IElement<RuntimeNode> _icon;
         public UpgradeNodeView(RuntimeNode data)
         {
             Data = data;
+            _graph = this;
 
             title = string.IsNullOrEmpty(data.Name) ? data.name : data.Name;
             viewDataKey = data.GetInstanceID().ToString();
 
             SetPosition(new Rect(data.position, new Vector2(220, 130)));
 
+            Init();
             CreateFoldout();
-
-            if (data.Icon != null)
-            {
-                var icon = new Image
-                {
-                    image = data.Icon.texture,
-                    scaleMode = ScaleMode.ScaleToFit
-                };
-
-                icon.style.width = 32;
-                icon.style.height = 32;
-                icon.style.marginRight = 4;
-
-                titleContainer.Insert(0, icon);
-            }
+            Icon();
 
             In = InstantiatePort(
                 Orientation.Horizontal,
@@ -59,10 +52,15 @@
             Out.portName = "Out";
             outputContainer.Add(Out);
 
+
             RefreshExpandedState();
             RefreshPorts();
         }
-
+        private void Init()
+        {
+            _foldoutView = new CreateNodeViewFoldOut(_graph);
+            _icon = new CreateIconNodeView(_graph);
+        }
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
@@ -70,19 +68,7 @@
             Data.position = newPos.position;
             EditorUtility.SetDirty(Data);
         }
-        private void CreateFoldout()
-        {
-            _foldout = new Foldout()
-            {
-                text = "Node settings",
-                value = false
-            };
-
-            var SO = new SerializedObject(Data);
-
-            _foldout.Add(new InspectorElement(SO));
-
-            extensionContainer.Add(_foldout);
-        }
+        private void Icon() => _icon.Execute(Data);
+        private void CreateFoldout() => _foldoutView.Execute(Data);
     }
 }

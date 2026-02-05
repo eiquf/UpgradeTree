@@ -1,6 +1,6 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
+﻿namespace Eiquif.UpgradeTree.Editor
 {
-    using Runtime.Node;
+    using Eiquif.UpgradeTree.Runtime;
     using System.Linq;
     using UnityEditor;
     using UnityEngine;

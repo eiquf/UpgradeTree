@@ -1,7 +1,7 @@
-namespace Eiquif.UpgradeTree.Runtime.Node
-{
-    using System;
+using System;
 
+namespace Eiquif.UpgradeTree.Runtime
+{
     [Serializable]
     public class NodeID
     {

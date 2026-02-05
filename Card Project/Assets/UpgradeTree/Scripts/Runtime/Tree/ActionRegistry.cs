@@ -1,9 +1,8 @@
-﻿namespace Eiquif.UpgradeTree.Runtime.Tree
-{
-    using Eiquif.UpgradeTree.Runtime.Node;
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Eiquif.UpgradeTree.Runtime
+{
     public class ActionRegistry
     {
         private readonly Dictionary<string, Action<Node>> _events = new();

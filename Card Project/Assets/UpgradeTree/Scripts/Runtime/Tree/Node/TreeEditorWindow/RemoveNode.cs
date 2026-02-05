@@ -1,7 +1,12 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+
+namespace Eiquif.UpgradeTree.Editor
 {
-    using Runtime.Tree;
-    using UnityEditor;
 
     public class RemoveNode : IElement<UpgradeNodeView>
     {

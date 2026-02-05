@@ -1,14 +1,29 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
-{
-    using Runtime.Tree;
-    using RuntimeNode = Runtime.Node.Node;
-    using System.Collections.Generic;
-    using System.Linq;
-    using UnityEditor;
-    using UnityEditor.Experimental.GraphView;
-    using UnityEditor.UIElements;
-    using UnityEngine.UIElements;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//
+// Description:
+// Custom Unity Editor window for creating and editing Upgrade Trees.
+// Provides a visual graph-based interface to:
+//  - Create and remove upgrade nodes
+//  - Connect nodes with directional edges
+//  - Edit tree and node data via an inspector panel
+//
+// Acts as the main orchestration layer between GraphView UI,
+// ScriptableObject data, and editor commands.
+//***************************************************************************************
 
+using Eiquif.UpgradeTree.Runtime;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+using RuntimeNode = Eiquif.UpgradeTree.Runtime.Node;
+
+namespace Eiquif.UpgradeTree.Editor
+{
     public class UpgradeTreeEditor : EditorWindow
     {
         private UpgradeGraphView _graph;
@@ -21,13 +36,16 @@
         private IElement _nodeCreator;
 
         [MenuItem("Window/UpgradeTree/Editor")]
-        private static void Open() => GetWindow<UpgradeTreeEditor>("Upgrade Tree");
+        private static void Open() =>
+            GetWindow<UpgradeTreeEditor>("Upgrade Tree");
 
         private void OnEnable()
         {
             rootVisualElement.Clear();
             BuildUI();
         }
+
+        #region Initialization
 
         private void Init()
         {
@@ -41,7 +59,7 @@
 
         private void BuildUI()
         {
-            var bar = new Toolbar();
+            var toolbar = new Toolbar();
 
             var treeField = new ObjectField("Tree")
             {
@@ -56,57 +74,52 @@
                 DrawTreeInspector();
             });
 
-            bar.Add(treeField);
-            bar.Add(new Button(CreateNode) { text = "+ NODE" });
-            bar.Add(new Button(Reload) { text = "UPDATE" });
-            bar.Add(new Button(Save) { text = "SAVE" });
+            toolbar.Add(treeField);
+            toolbar.Add(new Button(CreateNode) { text = "+ NODE" });
+            toolbar.Add(new Button(Reload) { text = "UPDATE" });
+            toolbar.Add(new Button(Save) { text = "SAVE" });
 
-            rootVisualElement.Add(bar);
+            rootVisualElement.Add(toolbar);
 
-            var split = new TwoPaneSplitView(0, 300, TwoPaneSplitViewOrientation.Horizontal);
-            rootVisualElement.Add(split);
+            var splitView = new TwoPaneSplitView(
+                0, 300, TwoPaneSplitViewOrientation.Horizontal);
+
+            rootVisualElement.Add(splitView);
 
             _graph = new UpgradeGraphView(this)
             {
                 style = { flexGrow = 1 },
                 OnSelect = DrawNodeInspector
             };
-            split.Add(_graph);
+
+            splitView.Add(_graph);
 
             _inspector = new VisualElement();
-            var scroll = new ScrollView();
-            scroll.Add(_inspector);
-            split.Add(scroll);
+            splitView.Add(_inspector);
         }
 
-        #region Graph Callbacks
-        public void OnEdgeCreated(Edge edge) => _edgeCreator?.Execute(edge);
-        public void OnEdgeRemoved(Edge edge) => _edgeRemover?.Execute(edge);
-        public void OnNodeRemoved(UpgradeNodeView view) => _nodeRemover?.Execute(view);
         #endregion
+
+        #region Graph Callbacks
+
+        public void OnEdgeCreated(Edge edge) =>
+            _edgeCreator?.Execute(edge);
+
+        public void OnEdgeRemoved(Edge edge) =>
+            _edgeRemover?.Execute(edge);
+
+        public void OnNodeRemoved(UpgradeNodeView view) =>
+            _nodeRemover?.Execute(view);
+
+        #endregion
+
+        #region UI Actions
 
         private void CreateNode()
         {
             _nodeCreator?.Execute();
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            Save();
             Reload();
-        }
-
-        private void DrawTreeInspector()
-        {
-            _inspector.Clear();
-            if (_tree != null)
-                _inspector.Add(new InspectorElement(new SerializedObject(_tree)));
-        }
-
-        private void DrawNodeInspector(UpgradeNodeView view)
-        {
-            _inspector.Clear();
-            if (view == null)
-                DrawTreeInspector();
-            else
-                _inspector.Add(new InspectorElement(new SerializedObject(view.Data)));
         }
 
         private void Reload()
@@ -116,7 +129,7 @@
             _graph.ClearGraph();
             Normalize(_tree);
 
-            var map = new Dictionary<RuntimeNode, UpgradeNodeView>();
+            var nodeViewMap = new Dictionary<RuntimeNode, UpgradeNodeView>();
 
             foreach (var node in _tree.Nodes)
             {
@@ -124,7 +137,7 @@
 
                 var view = new UpgradeNodeView(node);
                 _graph.AddElement(view);
-                map[node] = view;
+                nodeViewMap[node] = view;
             }
 
             foreach (var node in _tree.Nodes)
@@ -133,8 +146,10 @@
 
                 foreach (var next in node.NextNodes)
                 {
-                    if (next != null && map.ContainsKey(next))
-                        _graph.AddElement(map[node].Out.ConnectTo(map[next].In));
+                    if (next != null && nodeViewMap.ContainsKey(next))
+                        _graph.AddElement(
+                            nodeViewMap[node].Out
+                                .ConnectTo(nodeViewMap[next].In));
                 }
             }
         }
@@ -146,14 +161,41 @@
             EditorUtility.SetDirty(_tree);
 
             foreach (var node in _tree.Nodes)
-            {
                 if (node != null)
                     EditorUtility.SetDirty(node);
-            }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
+
+        #endregion
+
+        #region Inspector
+
+        private void DrawTreeInspector()
+        {
+            _inspector.Clear();
+
+            if (_tree != null)
+                _inspector.Add(
+                    new InspectorElement(new SerializedObject(_tree)));
+        }
+
+        private void DrawNodeInspector(UpgradeNodeView view)
+        {
+            _inspector.Clear();
+
+            if (view == null)
+                DrawTreeInspector();
+            else
+                _inspector.Add(
+                    new InspectorElement(
+                        new SerializedObject(view.Data)));
+        }
+
+        #endregion
+
+        #region Data Normalization
 
         private static void Normalize(NodeTree tree)
         {
@@ -162,13 +204,22 @@
                 .Distinct()
                 .ToList();
 
-            foreach (var n in tree.Nodes)
-                n.PrerequisiteNodes.Clear();
+            foreach (var node in tree.Nodes)
+                node.PrerequisiteNodes.Clear();
 
-            foreach (var n in tree.Nodes)
-                foreach (var next in n.NextNodes)
-                    if (next != null && !next.PrerequisiteNodes.Contains(n))
-                        next.PrerequisiteNodes.Add(n);
+            foreach (var node in tree.Nodes)
+            {
+                foreach (var next in node.NextNodes)
+                {
+                    if (next != null &&
+                        !next.PrerequisiteNodes.Contains(node))
+                    {
+                        next.PrerequisiteNodes.Add(node);
+                    }
+                }
+            }
         }
+
+        #endregion
     }
 }

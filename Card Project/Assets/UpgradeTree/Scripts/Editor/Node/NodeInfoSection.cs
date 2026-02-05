@@ -1,9 +1,9 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
-{
-    using UnityEditor;
-    using UnityEngine;
-    using Eiquif.UpgradeTree.Runtime.Node;
+﻿using UnityEditor;
+using UnityEngine;
+using Eiquif.UpgradeTree.Runtime;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public sealed class NodeInfoSection
     {
         private readonly SerializedObject _so;

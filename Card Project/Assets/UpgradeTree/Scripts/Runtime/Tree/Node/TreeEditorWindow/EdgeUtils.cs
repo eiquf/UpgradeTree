@@ -1,12 +1,16 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
-{
-    using System.Linq;
-    using UnityEditor;
-    using UnityEditor.Experimental.GraphView;
-    using UnityEngine;
-    using Node = Runtime.Node.Node;
-    using NodeTree = Runtime.Tree.NodeTree;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using Node = Eiquif.UpgradeTree.Runtime.Node;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     static class EdgeUtils
     {
         public static bool TryGetNodes(

@@ -1,8 +1,7 @@
-﻿namespace Eiquif.UpgradeTree.Runtime.Tree
-{
-    using System;
-    using Eiquif.UpgradeTree.Runtime.Node;
+﻿using System;
 
+namespace Eiquif.UpgradeTree.Runtime
+{
     public class ActionsRuntimeRegistration : UpgradeTreeRuntimeSystem
     {
         private readonly ActionRegistry _registry = new();
@@ -23,5 +22,3 @@
         }
     }
 }
-
-

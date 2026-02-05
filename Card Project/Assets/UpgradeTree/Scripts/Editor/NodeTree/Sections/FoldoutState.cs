@@ -1,4 +1,4 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
+﻿namespace Eiquif.UpgradeTree.Editor
 {
     using System.Collections.Generic;
 

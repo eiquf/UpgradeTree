@@ -1,8 +1,12 @@
-﻿namespace Eiquif.UpgradeTree.Editor.TreeWindow
-{
-    using Runtime.Tree;
-    using UnityEditor.Experimental.GraphView;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor.Experimental.GraphView;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public class CreateEdge : IElement<Edge>
     {
         private readonly NodeTree _tree;

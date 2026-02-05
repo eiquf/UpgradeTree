@@ -1,4 +1,8 @@
-﻿namespace Eiquif.UpgradeTree.Runtime.Tree
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+namespace Eiquif.UpgradeTree.Runtime
 {
     public abstract class UpgradeTreeRuntimeSystem
     {

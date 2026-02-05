@@ -1,10 +1,11 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Tree
-{
-    using Runtime.Node;
-    using System.Linq;
-    using UnityEditor;
-    using UnityEngine;
+﻿using Eiquif.UpgradeTree.Runtime;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
+
+namespace Eiquif.UpgradeTree.Editor
+{
     public class NodeTreeEditorNames : EditorNames
     {
         private readonly NodeTreeContext _ctx;
@@ -12,9 +13,6 @@
         private readonly string _name;
         private readonly EditorFlowerAnimation _anim = new();
 
-        /// <param name="context">The <see cref="NodeTreeContext"/> providing data for the node tree editor.</param>
-        /// <param name="name">The name of the node tree.</param>
-        /// <param name="lastUpdateTime">The last time the editor was updated.</param>
         public NodeTreeEditorNames(ContextSystem context, string name)
             : base(context)
         {
@@ -26,10 +24,6 @@
             EditorDrawUtils.DrawGradientRect(rect, new Color(0.2f, 0.25f, 0.35f), new Color(0.15f, 0.18f, 0.25f));
         protected override void DrawBorders(Rect rect) => EditorDrawUtils.DrawBorder(rect, EditorColors.PrimaryColor, 2);
 
-        /// <summary>
-        /// Draws the icons at the corners of the editor header.
-        /// </summary>
-        /// <param name="rect">The rectangle where the icons should be drawn.</param>
         protected override void DrawIcons(Rect rect)
         {
             var flowerStyle = new GUIStyle { fontSize = 16, alignment = TextAnchor.MiddleCenter };
@@ -49,11 +43,6 @@
             GUI.Label(titleRect, _name, titleStyle);
         }
 
-        /// <summary>
-        /// Draws the status badge with information about the number of nodes and IDs.
-        /// Also indicates if there are any issues with the node tree.
-        /// </summary>
-        /// <param name="rect">The rectangle where the status badge should be drawn.</param>
         protected override void DrawStatusBadge(Rect rect)
         {
             var nodeCount = _ctx.Tree.Nodes?.Count(n => n != null) ?? 0;

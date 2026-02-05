@@ -1,8 +1,7 @@
-﻿namespace Eiquif.UpgradeTree.Runtime.Node
-{
-    using Eiquif.UpgradeTree.Editor;
-    using Eiquif.UpgradeTree.Runtime.Tree;
+﻿using Eiquif.UpgradeTree.Editor;
 
+namespace Eiquif.UpgradeTree.Runtime
+{
     public abstract class ContextSystem
     {
         protected NodeTree NodeTree { get; set; }

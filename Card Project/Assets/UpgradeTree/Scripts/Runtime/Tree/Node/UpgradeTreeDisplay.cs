@@ -1,83 +1,79 @@
-﻿namespace Eiquif.UpgradeTree.Runtime.Tree
-{
-    using Eiquif.UpgradeTree.Runtime.Node;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using UnityEngine.UI;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using System.Collections.Generic;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Runtime
+{
     public class UpgradeTreeDisplay : UpgradeTreeRuntimeSystem
     {
         private readonly GameObject _nodeUIPrefab;
         private readonly RectTransform _container;
 
-        private readonly Dictionary<Node, UpgradeNodeUI> _spawnedNodes = new();
+        private readonly Dictionary<Node, GameObject> _spawnedNodes = new();
 
-        public UpgradeTreeDisplay(NodeTree tree, GameObject pref, RectTransform container) : base(tree)
+        private readonly IElement<RectTransform> _createNodeButtons;
+        private readonly IElement<List<GameObject>> _createConnectionLine;
+
+        public UpgradeTreeDisplay(
+            NodeTree tree,
+            GameObject nodeUIPrefab,
+            RectTransform container)
+            : base(tree)
         {
-            _nodeUIPrefab = pref;
+            _nodeUIPrefab = nodeUIPrefab;
             _container = container;
+
+            _createNodeButtons = new CreateNodeButtons(
+                _nodeUIPrefab,
+                _spawnedNodes,
+                Tree);
+
+            _createConnectionLine = new CreateNodeLine();
         }
 
         public override void Execute()
         {
-            foreach (Transform child in _container) Object.Destroy(child.gameObject);
+            ClearContainer();
+            CreateNodes();
+            CreateConnections();
+        }
+
+        private void ClearContainer()
+        {
+            foreach (Transform child in _container)
+                Object.Destroy(child.gameObject);
 
             _spawnedNodes.Clear();
+        }
 
-            CreatingButtons();
+        private void CreateNodes()
+        {
+            _createNodeButtons.Execute(_container);
+        }
 
-            foreach (Node nodeData in Tree.Nodes)
+        private void CreateConnections()
+        {
+            foreach (Node node in Tree.Nodes)
             {
-                foreach (Node nextNode in nodeData.NextNodes)
+                foreach (Node nextNode in node.NextNodes)
                 {
-                    CreateLine(_spawnedNodes[nodeData], _spawnedNodes[nextNode]);
+                    CreateLine(
+                        _spawnedNodes[node],
+                        _spawnedNodes[nextNode]);
                 }
             }
         }
-        private void CreatingButtons()
+
+        private void CreateLine(GameObject from, GameObject to)
         {
-            foreach (Node nodeData in Tree.Nodes)
+            _createConnectionLine.Execute(new List<GameObject>
             {
-                if (nodeData == null) continue;
-
-                GameObject go = Object.Instantiate(_nodeUIPrefab, _container);
-                Button button = go.GetComponent<Button>();
-                //button.onClick.AddListener();
-
-                UpgradeNodeUI uiScript = go.GetComponent<UpgradeNodeUI>();
-                uiScript.Setup(nodeData);
-
-                _spawnedNodes.Add(nodeData, uiScript);
-            }
-        }
-        private void CreateLine(UpgradeNodeUI from, UpgradeNodeUI to)
-        {
-            GameObject lineObj = new("ConnectLine", typeof(Image));
-            lineObj.transform.SetParent(_container, false);
-            lineObj.transform.SetAsFirstSibling();
-
-            Image lineImage = lineObj.GetComponent<Image>();
-            lineImage.color = Color.white;
-
-            RectTransform rect = lineObj.GetComponent<RectTransform>();
-            RectTransform fromRect = from.GetComponent<RectTransform>();
-            RectTransform toRect = to.GetComponent<RectTransform>();
-
-            Vector2 startPos = fromRect.anchoredPosition;
-            Vector2 endPos = toRect.anchoredPosition;
-            Vector2 direction = endPos - startPos;
-            float distance = direction.magnitude;
-
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0, 0.5f);
-
-            rect.anchoredPosition = startPos;
-            rect.sizeDelta = new Vector2(distance, 8f);
-
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            rect.localRotation = Quaternion.Euler(0, 0, angle);
+                from,
+                to
+            });
         }
     }
-
 }

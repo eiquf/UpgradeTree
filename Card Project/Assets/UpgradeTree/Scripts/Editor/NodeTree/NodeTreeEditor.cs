@@ -1,13 +1,11 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Tree
-{
-    using Eiquif.UpgradeTree.Editor.Node;
-    using Runtime.Node;
-    using Runtime.Tree;
-    using UnityEditor;
-    using UnityEngine;
+﻿using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     [CustomEditor(typeof(NodeTree))]
-    public class NodeTreeEditor : Editor
+    public class NodeTreeEditor : UnityEditor.Editor
     {
         private SerializedProperty _nodesProp;
         private SerializedProperty _idsProp;

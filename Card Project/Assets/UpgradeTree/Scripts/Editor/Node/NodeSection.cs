@@ -1,8 +1,13 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+using UnityEngine;
+
+namespace Eiquif.UpgradeTree.Editor
 {
-    using Eiquif.UpgradeTree.Runtime.Node;
-    using UnityEditor;
-    using UnityEngine;
     public class NodeSection : Section
     {
         private readonly NodeTreeContext _ctx;
@@ -11,6 +16,8 @@
         private NodeValidationDrawer _validator;
 
         private bool _showNodesSection = true;
+
+        private readonly NodeTreeEditorService _service = new();
 
         public NodeSection(ContextSystem ctx) : base(ctx)
         {
@@ -45,10 +52,7 @@
 
                     DrawToolbar();
 
-                    if (_nodeList != null)
-                    {
-                        _nodeList.List.DoLayoutList();
-                    }
+                    _nodeList?.List.DoLayoutList();
 
                     DrawTreeValidation();
                 }
@@ -72,10 +76,26 @@
                     "Delete",
                     "Cancel"))
                 {
-                    _ctx.Tree.RemoveAllNodes();
-                    AssetDatabase.SaveAssets();
+                    var tree = _ctx.Tree;
+                    var editor = EditorWindow.focusedWindow;
+
+                    EditorApplication.delayCall += () =>
+                    {
+                        if (tree == null) return;
+
+                        _ctx.SerializedObject.Update();
+                        _ctx.SerializedObject.ApplyModifiedPropertiesWithoutUndo();
+
+                        _service.RemoveAllNodes(tree);
+
+                        AssetDatabase.SaveAssets();
+
+                        editor?.Repaint();
+                        Selection.activeObject = tree;
+                    };
                 }
             }
+
 
             GUI.backgroundColor = Color.white;
 

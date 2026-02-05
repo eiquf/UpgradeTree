@@ -1,4 +1,9 @@
-﻿using Eiquif.UpgradeTree.Runtime.Node;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+// Description: Abstract section for all section types setup and create
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
 
 public abstract class Section
 {

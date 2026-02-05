@@ -1,11 +1,11 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Tree
-{
-    using Eiquif.UpgradeTree.Runtime.Node;
-    using System.Collections.Generic;
-    using System.Linq;
-    using UnityEditor;
-    using UnityEngine;
+﻿using Eiquif.UpgradeTree.Runtime;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public class SummarySection : Section
     {
         private readonly NodeTreeContext _ctx;

@@ -1,8 +1,13 @@
-﻿namespace Eiquif.UpgradeTree.Editor.Node
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+using UnityEngine;
+
+namespace Eiquif.UpgradeTree.Editor
 {
-    using Eiquif.UpgradeTree.Runtime.Node;
-    using UnityEditor;
-    using UnityEngine;
     public static class NodeIDField
     {
         public static string Draw(
