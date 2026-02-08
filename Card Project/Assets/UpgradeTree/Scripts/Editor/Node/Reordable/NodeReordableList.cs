@@ -84,7 +84,7 @@ namespace Eiquif.UpgradeTree.Editor
                     var node = element.objectReferenceValue as Node;
                     if (node == null) return;
 
-                    if (!UnityEditor.EditorUtility.DisplayDialog(
+                    if (!EditorUtility.DisplayDialog(
                         "Delete node?",
                         $"Delete node '{node.name}'?\n\nThis action can be undone.",
                         "Delete",

@@ -5,7 +5,7 @@ namespace Eiquif.UpgradeTree.Editor
 {
     public sealed class SummaryStatsElement : IElement<SummaryCtx>
     {
-        public void Execute(SummaryCtx? ctx)
+        public void Execute(SummaryCtx ctx)
         {
             if (ctx == null) return;
 
