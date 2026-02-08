@@ -30,7 +30,7 @@ namespace Eiquif.UpgradeTree.Editor
                 {
                     Undo.RecordObject(node, "Clear Node ID");
                     node.ID.Value = string.Empty;
-                    EditorUtility.SetDirty(node);
+                    UnityEditor.EditorUtility.SetDirty(node);
                 });
         }
 
@@ -55,7 +55,7 @@ namespace Eiquif.UpgradeTree.Editor
                     {
                         Undo.RecordObject(node, "Set Node ID");
                         node.ID.Value = captured;
-                        EditorUtility.SetDirty(node);
+                        UnityEditor.EditorUtility.SetDirty(node);
                     });
             }
         }

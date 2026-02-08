@@ -14,30 +14,36 @@ namespace Eiquif.UpgradeTree.Runtime
 
         public NodeTreeContext(
             NodeTree tree,
-            SerializedObject so,
-            SerializedProperty nodes,
-            SerializedProperty ids)
+            SerializedObject so)
         {
             NodeTree = tree;
             SerializedObject = so;
-            NodesProp = nodes;
-            IDsProp = ids;
+
+            NodesProp = so.FindProperty(NodeTreePropertiesNames.Nodes);
+            IDsProp = so.FindProperty(NodeTreePropertiesNames.IDs);
 
             IDMenu = new NodeIDMenu();
 
+            Errors();
+        }
+
+        public void Record(string label)
+        {
+            Undo.RecordObject(Tree, label);
+            UnityEditor.EditorUtility.SetDirty(Tree);
+        }
+#if UNITY_EDITOR
+        #region Future addition
+        public void UpdateTime(double time) => LastUpdateTime = time;
+        #endregion
+#endif
+        private void Errors()
+        {
             if (IDsProp == null)
                 Debug.LogError("[NodeTreeEditor] IDsProp is null!");
 
             if (NodesProp == null)
                 Debug.LogError("[NodeTreeEditor] NodesProp is null!");
         }
-
-        public void Record(string label)
-        {
-            Undo.RecordObject(Tree, label);
-            EditorUtility.SetDirty(Tree);
-        }
-
-        public void UpdateTime(double time) => LastUpdateTime = time;
     }
 }

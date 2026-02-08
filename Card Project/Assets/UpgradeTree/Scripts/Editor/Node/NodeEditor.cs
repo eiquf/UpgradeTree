@@ -1,11 +1,15 @@
-﻿namespace Eiquif.UpgradeTree.Editor
-{
-    using Eiquif.UpgradeTree.Runtime;
-    using UnityEditor;
-    using UnityEngine;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     [CustomEditor(typeof(Node))]
-    public class NodeEditor : Editor
+    public class NodeEditor : UnityEditor.Editor
     {
         #region Serialized
         private SerializedProperty _nextProp;
@@ -13,8 +17,10 @@
 
         private SerializedObject _so;
         #endregion
+
         private Node _node;
         private NodeContext _ctx;
+
         #region Sections
         private NodeEditorNames _names;
         private NodeInfoSection _info;
@@ -63,8 +69,8 @@
             _node = (Node)target;
             _so = new SerializedObject(target);
 
-            _nextProp = serializedObject.FindProperty("NextNodes");
-            _prerequisiteProp = serializedObject.FindProperty("PrerequisiteNodes");
+            _nextProp = serializedObject.FindProperty(NodePropertiesNames.NextNodes);
+            _prerequisiteProp = serializedObject.FindProperty(NodePropertiesNames.PrerequisiteNodes);
         }
         private void InitSections()
         {

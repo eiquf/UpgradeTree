@@ -70,7 +70,7 @@ namespace Eiquif.UpgradeTree.Editor
 
             if (GUILayout.Button("🗑 Delete All Nodes", GUILayout.Width(160)))
             {
-                if (EditorUtility.DisplayDialog(
+                if (UnityEditor.EditorUtility.DisplayDialog(
                     "Delete all nodes?",
                     "This will permanently delete ALL node sub-assets.\n\nThis action can be undone.",
                     "Delete",

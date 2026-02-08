@@ -1,91 +1,63 @@
-﻿namespace Eiquif.UpgradeTree.Editor
-{
-    using Eiquif.UpgradeTree.Runtime;
-    using System.Linq;
-    using UnityEditor;
-    using UnityEngine;
+﻿using Eiquif.UpgradeTree.Runtime;
+using UnityEngine;
 
-    public class NodeEditorNames : EditorNames
+namespace Eiquif.UpgradeTree.Editor
+{
+    public sealed class NodeEditorNames : EditorNames
     {
         private readonly NodeContext _ctx;
+        private readonly NodeHeaderContext _headerCtx;
 
-        private readonly string _name;
-        private readonly EditorFlowerAnimation _anim = new();
+        private readonly IElement<NodeHeaderContext>[] _header;
+        private readonly IElement<NodeContext>[] _footer;
+        private readonly IElement[] _staticFooter;
 
         public NodeEditorNames(ContextSystem context, string name)
             : base(context)
         {
-            _name = name;
             _ctx = (NodeContext)context;
-        }
 
-        protected override void DrawBackground(Rect rect) =>
-            EditorDrawUtils.DrawGradientRect(rect, new Color(0.2f, 0.25f, 0.35f), new Color(0.15f, 0.18f, 0.25f));
-        protected override void DrawBorders(Rect rect) => EditorDrawUtils.DrawBorder(rect, EditorColors.PrimaryColor, 2);
-
-        protected override void DrawIcons(Rect rect)
-        {
-            var flowerStyle = new GUIStyle { fontSize = 16, alignment = TextAnchor.MiddleCenter };
-            GUI.Label(new Rect(rect.x + 4, rect.y + 2, 20, 20), "🎀", flowerStyle);
-            GUI.Label(new Rect(rect.xMax - 24, rect.y + 2, 20, 20), "✨", flowerStyle);
-            GUI.Label(new Rect(rect.x + 4, rect.yMax - 22, 20, 20), "🔮", flowerStyle);
-            GUI.Label(new Rect(rect.xMax - 24, rect.yMax - 22, 20, 20), "🌴", flowerStyle);
-
-            var iconRect = new Rect(rect.x + 12, rect.y + 10, 30, 30);
-            GUI.Label(iconRect, "🎁", new GUIStyle { fontSize = 24, alignment = TextAnchor.MiddleCenter });
-        }
-        protected override void DrawTitle(Rect rect)
-        {
-            var titleStyle = new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 };
-            titleStyle.normal.textColor = Color.white;
-            var titleRect = new Rect(rect.x + 50, rect.y + 8, rect.width - 120, 20);
-            GUI.Label(titleRect, _name, titleStyle);
-        }
-
-        protected override void DrawStatusBadge(Rect rect)
-        {
-            var nodeNextCount = _ctx.Node.NextNodes?.Count(n => n != null) ?? 0;
-            var nodePrerequisiteCount = _ctx.Node.PrerequisiteNodes?.Count ?? 0;
-            var subtitleStyle = new GUIStyle(EditorStyles.miniLabel)
+            _headerCtx = new NodeHeaderContext
             {
-                normal = { textColor = new Color(0.7f, 0.7f, 0.7f) }
+                Name = name,
+                NodeContext = _ctx
             };
 
-            var subtitleRect = new Rect(rect.x + 50, rect.y + 26, rect.width - 120, 16);
-            GUI.Label(subtitleRect, $"{nodeNextCount} next nodes • {nodePrerequisiteCount} prerequisite nodes", subtitleStyle);
-
-            var badgeRect = new Rect(rect.xMax - 70, rect.y + 15, 60, 20);
-            var isValid = nodeNextCount > 0 && _ctx.Node.NextNodes.All(n => n == null || !string.IsNullOrEmpty(n.ID.Value));
-            EditorDrawUtils.DrawStatusBadge(badgeRect, isValid ? "Valid" : "Issues", isValid ? EditorColors.SuccessColor : EditorColors.WarningColor);
-        }
-        protected override void DrawFooterButtons()
-        {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-
-            if (GUILayout.Button("🌸 Flowers! 🌸", GUILayout.Width(100), GUILayout.Height(24)))
+            _header = new IElement<NodeHeaderContext>[]
             {
-                var rect = GUILayoutUtility.GetLastRect();
-                _anim.Spawn(new Vector2(rect.center.x, rect.center.y), 15);
-            }
+                new NodeHeaderBackgroundElement(),
+                new NodeHeaderBordersElement(),
+                new NodeHeaderIconsElement(),
+                new NodeHeaderTitleElement(),
+                new NodeHeaderStatusBadgeElement()
+            };
 
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
+            _footer = new IElement<NodeContext>[]
+            {
+                new NodeFooterButtonsElement()
+            };
+
+            _staticFooter = new IElement[]
+            {
+                new NodeFooterTextElement()
+            };
         }
 
-        protected override void DrawFooterText()
+        protected override void OnDrawHeader(Rect rect)
         {
-            GUILayout.Space(4);
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
+            _headerCtx.Rect = rect;
 
-            var style = new GUIStyle(EditorStyles.centeredGreyMiniLabel) { fontSize = 9 };
-            GUILayout.Label("Node Tree Editor v1.0", style);
-
-            GUILayout.FlexibleSpace();
-            EditorGUILayout.EndHorizontal();
-            UpdateAndDrawFlowersAnim();
+            foreach (var element in _header)
+                element.Execute(_headerCtx);
         }
-        private void UpdateAndDrawFlowersAnim() => _anim.UpdateAndDraw_flowers(_ctx.LastUpdateTime);
+
+        protected override void OnDrawFooter()
+        {
+            foreach (var element in _footer)
+                element.Execute(_ctx);
+
+            foreach (var element in _staticFooter)
+                element.Execute();
+        }
     }
 }

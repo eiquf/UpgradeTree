@@ -1,40 +1,32 @@
-﻿namespace Eiquif.UpgradeTree.Editor
-{
-    using Eiquif.UpgradeTree.Runtime;
-    using UnityEditor;
-    using UnityEngine;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEditor;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public abstract class EditorNames
     {
-        protected ContextSystem context;
-        protected Rect headerRect;
+        protected readonly ContextSystem Context;
 
-        public EditorNames(ContextSystem context) => this.context = context;
-
+        protected EditorNames(ContextSystem context)
+        {
+            Context = context;
+        }
         public void DrawHeader()
         {
-            headerRect = EditorGUILayout.GetControlRect(false, 50);
-
-            DrawBackground(headerRect);
-            DrawBorders(headerRect);
-            DrawIcons(headerRect);
-            DrawTitle(headerRect);
-            DrawStatusBadge(headerRect);
+            var rect = EditorGUILayout.GetControlRect(false, HeaderHeight);
+            OnDrawHeader(rect);
         }
-
-        protected virtual void DrawBackground(Rect rect) { }
-        protected virtual void DrawBorders(Rect rect) { }
-        protected virtual void DrawIcons(Rect rect) { }
-        protected virtual void DrawTitle(Rect rect) { }
-        protected virtual void DrawStatusBadge(Rect rect) { }
-
-        public virtual void DrawFooter()
+        public void DrawFooter()
         {
-            DrawFooterButtons();
-            DrawFooterText();
+            OnDrawFooter();
         }
-
-        protected abstract void DrawFooterButtons();
-        protected abstract void DrawFooterText();
+        protected virtual float HeaderHeight => 50f;
+        protected abstract void OnDrawHeader(Rect rect);
+        protected abstract void OnDrawFooter();
     }
 }

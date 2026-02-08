@@ -1,8 +1,8 @@
-﻿namespace Eiquif.UpgradeTree.Runtime
+﻿using Eiquif.UpgradeTree.Editor;
+using UnityEditor;
+
+namespace Eiquif.UpgradeTree.Runtime
 {
-    using Eiquif.UpgradeTree.Runtime;
-    using Eiquif.UpgradeTree.Editor;
-    using UnityEditor;
     public class NodeContext : ContextSystem
     {
         public SerializedObject SerializedObject { get; }

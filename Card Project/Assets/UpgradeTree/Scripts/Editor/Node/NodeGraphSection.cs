@@ -1,8 +1,12 @@
-﻿namespace Eiquif.UpgradeTree.Editor
-{
-    using Eiquif.UpgradeTree.Runtime;
-    using UnityEngine;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using UnityEngine;
 
+namespace Eiquif.UpgradeTree.Editor
+{
     public class NodeGraphSection : Section
     {
         private readonly NodeContext _ctx;
@@ -79,9 +83,10 @@
                 }
             );
 
-            _anim.UpdateAndDraw_flowers(_ctx.LastUpdateTime);
+            _anim.UpdateAndDrawFlowers(_ctx.LastUpdateTime);
         }
 
+#if UNITY_EDITOR
         #region Test Feature
         private void HandleFlowerClicks()
         {
@@ -89,5 +94,6 @@
                 _anim.Spawn(Event.current.mousePosition, 10);
         }
         #endregion
+#endif
     }
 }

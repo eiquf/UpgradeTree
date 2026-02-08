@@ -1,4 +1,10 @@
-﻿using Eiquif.UpgradeTree.Runtime;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+// Description: Shows all properties and data of Scriptable Object - NodeTree
+//              on inspector screen
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,16 +13,13 @@ namespace Eiquif.UpgradeTree.Editor
     [CustomEditor(typeof(NodeTree))]
     public class NodeTreeEditor : UnityEditor.Editor
     {
-        private SerializedProperty _nodesProp;
-        private SerializedProperty _idsProp;
-
         private NodeTree _tree;
 
         private NodeTreeContext _context;
 
+        #region Section
         private EditorNames _names;
 
-        #region Section
         private Section _node;
         private Section _summary;
         private Section _id;
@@ -26,11 +29,7 @@ namespace Eiquif.UpgradeTree.Editor
         {
             _tree = (NodeTree)target;
 
-            _nodesProp = serializedObject.FindProperty("Nodes");
-            _idsProp = serializedObject.FindProperty("IDs");
-
-            var SO = new SerializedObject(this);
-            _context = new NodeTreeContext(_tree, SO, _nodesProp, _idsProp);
+            _context = new NodeTreeContext(_tree, serializedObject);
 
             _node = new NodeSection(_context);
             _summary = new SummarySection(_context);
@@ -44,6 +43,7 @@ namespace Eiquif.UpgradeTree.Editor
             serializedObject.Update();
 
             EditorGUILayout.BeginVertical();
+
             GUILayout.Space(8);
 
             _names.DrawHeader();

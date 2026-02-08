@@ -49,12 +49,12 @@ namespace Eiquif.UpgradeTree.Editor
             EditorGUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
-            EditorDrawUtils.DrawMiniStatBadge($"✓ {usedCount} used", EditorColors.SuccessColor);
+            EditorBadges.DrawMiniStatBadge($"✓ {usedCount} used", EditorColors.SuccessColor);
             GUILayout.Space(8);
 
             if (unusedCount > 0)
             {
-                EditorDrawUtils.DrawMiniStatBadge($"○ {unusedCount} unused", EditorColors.WarningColor);
+                EditorBadges.DrawMiniStatBadge($"○ {unusedCount} unused", EditorColors.WarningColor);
             }
 
             GUILayout.FlexibleSpace();
@@ -73,7 +73,7 @@ namespace Eiquif.UpgradeTree.Editor
 
                     EditorGUI.LabelField(labelRect, "Registered IDs", EditorStyles.boldLabel);
 
-                    EditorDrawUtils.DrawCountBadge(countRect, _ctx.IDsProp.arraySize, EditorColors.PrimaryColor);
+                    EditorBadges.DrawCountBadge(countRect, _ctx.IDsProp.arraySize, EditorColors.PrimaryColor);
                 },
 
                 drawElementCallback = (rect, index, active, focused) =>
@@ -125,7 +125,7 @@ namespace Eiquif.UpgradeTree.Editor
 
                     if (usedBy != null && usedBy.Count > 0)
                     {
-                        if (!EditorUtility.DisplayDialog(
+                        if (!UnityEditor.EditorUtility.DisplayDialog(
                             "⚠️ ID In Use",
                             $"ID '{id}' is used by {usedBy.Count} nodes.\n\nRemoving it will leave those nodes without an ID.",
                             "Remove Anyway", "Cancel"))

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -7,7 +11,7 @@ namespace Eiquif.UpgradeTree.Editor
 {
     public class EditorFlowerAnimation
     {
-        private List<FlowerParticle> _flowers = new();
+        private readonly List<FlowerParticle> _flowers = new();
         private double _lastUpdateTime;
 
         private struct FlowerParticle
@@ -51,7 +55,7 @@ namespace Eiquif.UpgradeTree.Editor
         /// <summary>
         /// UpdateAndDraw_flowers over UI.
         /// </summary>
-        public void UpdateAndDraw_flowers(double lastTime)
+        public void UpdateAndDrawFlowers(double lastTime)
         {
             if (_flowers.Count == 0) return;
             _lastUpdateTime = lastTime;

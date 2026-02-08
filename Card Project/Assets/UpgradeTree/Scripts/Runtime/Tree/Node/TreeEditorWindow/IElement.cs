@@ -1,9 +1,13 @@
-﻿#nullable enable
+﻿//***************************************************************************************
+// Writer: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+#nullable enable
 /// <summary>
 /// UI element that participates in rendering one list item.
-/// USes as step of Draw pipeline
+/// Uses as step of Draw pipeline
 /// </summary>
-public interface IElement<T> where T : class
+public interface IElement<T>
 {
     /// <summary>
     /// Draw element

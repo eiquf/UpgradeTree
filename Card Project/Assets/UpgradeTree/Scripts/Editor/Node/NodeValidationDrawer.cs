@@ -1,129 +1,78 @@
-﻿using System.Collections.Generic;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Eiquif.UpgradeTree.Runtime;
 
 namespace Eiquif.UpgradeTree.Editor
 {
-    public class NodeValidationDrawer
+    public sealed class NodeValidationDrawer
     {
         private readonly EditorFlowerAnimation _anim = new();
 
+        private readonly IElement _header = new CreateValidationHeader();
+        private readonly IElement<ValidationCtx> _items = new ValidationItemsElement();
+        private readonly IElement<ValidationCtx> _actions = new ValidationActionsElement();
+
         public void Draw(List<Node> nodes, Object undoTarget)
         {
-            if (nodes == null || nodes.Count == 0) return;
+            if (nodes == null || nodes.Count == 0)
+                return;
 
-            var nullCount = nodes.Count(n => n == null);
+            var ctx = BuildContext(nodes, undoTarget);
 
-            var noIdCount = nodes.Count(n => n != null && string.IsNullOrEmpty(n.ID.Value));
-
-            var duplicateGroups = nodes
-                .Where(n => n != null && !string.IsNullOrEmpty(n.ID.Value))
-                .GroupBy(n => n.ID.Value)
-                .Where(g => g.Count() > 1)
-                .ToList();
-
-            var duplicateCount = duplicateGroups.Sum(g => g.Count() - 1);
-
-            if (nullCount == 0 && noIdCount == 0 && duplicateCount == 0) return;
+            if (ctx.NullCount == 0 &&
+                ctx.NoIdCount == 0 &&
+                ctx.DuplicateCount == 0)
+                return;
 
             GUILayout.Space(8);
             EditorGUILayout.BeginVertical(EditorStyleCache.CardStyle);
-            DrawHeader();
 
-            if (nullCount > 0)
-                DrawItem($"{nullCount} empty slot(s)", EditorColors.ErrorColor);
-
-            if (noIdCount > 0)
-                DrawItem($"{noIdCount} node(s) without ID", EditorColors.WarningColor);
-
-            if (duplicateCount > 0)
-                DrawItem($"{duplicateCount} duplicate ID(s) found", EditorColors.WarningColor);
+            _header.Execute();
+            _items.Execute(ctx);
 
             GUILayout.Space(8);
 
-            if (nullCount > 0)
-            {
-                if (GUILayout.Button("🧹 Clean Empty Slots", GUILayout.Height(24)))
-                {
-                    Undo.RecordObject(undoTarget, "Clean Null Nodes");
-                    int removed = nodes.RemoveAll(n => n == null);
-                    ApplyChanges(undoTarget, removed);
-                }
-            }
-
-            if (duplicateCount > 0)
-            {
-                if (GUILayout.Button("👯 Remove Duplicates", GUILayout.Height(24)))
-                {
-                    Undo.RecordObject(undoTarget, "Remove Duplicate Nodes");
-
-                    var seenIds = new HashSet<string>();
-                    var uniqueList = new List<Node>();
-                    int removed = 0;
-
-                    foreach (var node in nodes)
-                    {
-                        if (node == null)
-                        {
-                            uniqueList.Add(null); 
-                            continue;
-                        }
-
-                        string id = node.ID.Value;
-                        if (string.IsNullOrEmpty(id))
-                        {
-                            uniqueList.Add(node); 
-                            continue;
-                        }
-
-                        if (!seenIds.Contains(id))
-                        {
-                            seenIds.Add(id);
-                            uniqueList.Add(node);
-                        }
-                        else
-                        {
-                            removed++;
-                        }
-                    }
-
-                    nodes.Clear();
-                    nodes.AddRange(uniqueList);
-                    ApplyChanges(undoTarget, removed);
-                }
-            }
+            _actions.Execute(ctx);
 
             EditorGUILayout.EndVertical();
+        }
+
+        private ValidationCtx BuildContext(List<Node> nodes, Object undoTarget)
+        {
+            var duplicateCount = nodes
+                .Where(n => n != null)
+                .Select(n => n.ID.Value)
+                .Where(id => !string.IsNullOrEmpty(id))
+                .GroupBy(id => id)
+                .Sum(g => Mathf.Max(0, g.Count() - 1));
+
+            return new ValidationCtx
+            {
+                Nodes = nodes,
+                UndoTarget = undoTarget,
+                NullCount = nodes.Count(n => n == null),
+                NoIdCount = nodes.Count(n => n != null && string.IsNullOrEmpty(n.ID.Value)),
+                DuplicateCount = duplicateCount,
+                ApplyChanges = ApplyChanges
+            };
         }
 
         private void ApplyChanges(Object undoTarget, int changeCount)
         {
             EditorUtility.SetDirty(undoTarget);
-            if (changeCount > 0)
-            {
-                var rect = GUILayoutUtility.GetLastRect();
-                _anim?.Spawn(rect.center, changeCount * 3);
-            }
-        }
 
-        protected virtual void DrawHeader()
-        {
-            var rect = EditorGUILayout.GetControlRect(false, 24);
-            EditorGUI.DrawRect(rect, EditorColors.WarningBgLight);
-            var style = new GUIStyle(EditorStyles.boldLabel) { fontSize = 11, alignment = TextAnchor.MiddleLeft };
-            style.normal.textColor = EditorColors.WarningColor;
-            GUI.Label(new Rect(rect.x + 4, rect.y, rect.width, rect.height), "⚠️ Validation Issues", style);
-        }
+            if (changeCount <= 0)
+                return;
 
-        protected virtual void DrawItem(string text, Color color)
-        {
-            EditorGUILayout.BeginHorizontal();
-            var dot = EditorGUILayout.GetControlRect(GUILayout.Width(8), GUILayout.Height(16));
-            EditorGUI.DrawRect(new Rect(dot.x, dot.y + 4, 8, 8), color);
-            EditorGUILayout.LabelField(text);
-            EditorGUILayout.EndHorizontal();
+            var rect = GUILayoutUtility.GetLastRect();
+            if (rect.width > 0f)
+                _anim.Spawn(rect.center, changeCount * 3);
         }
     }
 }

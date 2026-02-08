@@ -46,7 +46,7 @@ namespace Eiquif.UpgradeTree.Editor
                         EditorStyles.boldLabel
                     );
 
-                    EditorDrawUtils.DrawCountBadge(
+                    EditorBadges.DrawCountBadge(
                         new Rect(rect.xMax - 55, rect.y, 55, rect.height),
                         property.arraySize,
                         badgeColor
@@ -84,7 +84,7 @@ namespace Eiquif.UpgradeTree.Editor
                     var node = element.objectReferenceValue as Node;
                     if (node == null) return;
 
-                    if (!EditorUtility.DisplayDialog(
+                    if (!UnityEditor.EditorUtility.DisplayDialog(
                         "Delete node?",
                         $"Delete node '{node.name}'?\n\nThis action can be undone.",
                         "Delete",
