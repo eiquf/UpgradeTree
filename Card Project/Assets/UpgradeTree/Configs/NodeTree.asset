@@ -16,14 +16,15 @@ MonoBehaviour:
     Value: 
   _displayName: 
   _description: 
-  NextNodes: []
+  NextNodes:
+  - {fileID: 6992559985941325879}
   PrerequisiteNodes: []
   _cost: 0
   _parentLevelUnlock: 0
   _unlockIfParentMax: 1
   _stats: {fileID: 0}
   _icon: {fileID: 0}
-  position: {x: 0, y: 0}
+  position: {x: -25.59999, y: 11.200012}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38,4 +39,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Nodes:
   - {fileID: -7281071287398556015}
+  - {fileID: 6992559985941325879}
   IDs: []
+--- !u!114 &6992559985941325879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d72bd7bd2aae414e820da1c3daf024a, type: 3}
+  m_Name: Node
+  m_EditorClassIdentifier: 
+  _id:
+    Value: 
+  _displayName: 
+  _description: 
+  NextNodes: []
+  PrerequisiteNodes:
+  - {fileID: -7281071287398556015}
+  _cost: 0
+  _parentLevelUnlock: 0
+  _unlockIfParentMax: 1
+  _stats: {fileID: 0}
+  _icon: {fileID: 0}
+  position: {x: 76, y: 107.2}
