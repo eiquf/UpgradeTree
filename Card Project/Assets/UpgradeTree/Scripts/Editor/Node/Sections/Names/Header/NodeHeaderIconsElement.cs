@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using UnityEngine;
 
 namespace Eiquif.UpgradeTree.Editor
 {

@@ -1,4 +1,8 @@
-﻿using Eiquif.UpgradeTree.Runtime;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,7 +23,7 @@ namespace Eiquif.UpgradeTree.Editor
                 _ctx.Node,
                 _ctx
             );
-            UnityEditor.EditorUtility.SetDirty(_ctx.Node);
+            EditorUtility.SetDirty(_ctx.Node);
         }
     }
 }

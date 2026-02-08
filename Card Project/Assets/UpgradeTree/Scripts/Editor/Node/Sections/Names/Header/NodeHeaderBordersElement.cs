@@ -1,4 +1,8 @@
-﻿namespace Eiquif.UpgradeTree.Editor
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+namespace Eiquif.UpgradeTree.Editor
 {
     public sealed class NodeHeaderBordersElement : IElement<NodeHeaderContext>
     {

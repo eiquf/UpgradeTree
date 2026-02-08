@@ -1,4 +1,8 @@
-﻿using Eiquif.UpgradeTree.Runtime;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
 using UnityEditorInternal;
 
 namespace Eiquif.UpgradeTree.Editor

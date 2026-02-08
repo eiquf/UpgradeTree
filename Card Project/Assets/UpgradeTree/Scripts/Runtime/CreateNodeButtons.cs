@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

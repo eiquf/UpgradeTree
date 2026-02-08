@@ -1,4 +1,8 @@
-﻿using Eiquif.UpgradeTree.Editor;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Editor;
 using UnityEditor;
 using UnityEngine;
 

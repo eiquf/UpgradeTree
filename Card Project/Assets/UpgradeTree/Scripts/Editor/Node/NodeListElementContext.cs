@@ -1,8 +1,12 @@
-﻿using Eiquif.UpgradeTree.Runtime;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
 using UnityEditor;
 using UnityEngine;
 
-public sealed class NodeListElementContext
+public class NodeListElementContext
 {
     public Rect Rect;
     public SerializedProperty Property;

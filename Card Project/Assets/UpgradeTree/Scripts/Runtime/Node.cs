@@ -1,10 +1,29 @@
 //***************************************************************************************
 // Author: Eiquif
 // Last Updated: January 2026
-// Description: ScriptableObject representing a single upgrade node.
-//              Stores metadata, graph connections, requirements,
-//              and visual information used at runtime and in the editor.
 //***************************************************************************************
+/// <summary>
+/// Represents a single upgrade node within a NodeTree.
+///
+/// A Node is not a standalone asset and must always be owned by exactly one
+/// NodeTree instance. It exists only in the context of its parent tree and
+/// should never be created, duplicated, or modified independently.
+///
+/// Responsibilities:
+/// - Stores node-specific metadata (ID, name, description)
+/// - Defines graph connections to other nodes (next and prerequisite nodes)
+/// - Contains unlock requirements and progression rules
+/// - Holds visual and gameplay-related data used at runtime and in the editor
+///
+/// Ownership & Rules:
+/// - Nodes are conceptually children of a NodeTree
+/// - A Node must not be shared between multiple NodeTrees
+/// - All structural changes (creation, removal, linking, ID assignment)
+///   must be performed through the owning NodeTree or its editor systems
+///
+/// Any editor or runtime system should treat the NodeTree as the source of truth
+/// and assume that Nodes are valid only while referenced by that tree.
+/// </summary>
 using System.Collections.Generic;
 using UnityEngine;
 

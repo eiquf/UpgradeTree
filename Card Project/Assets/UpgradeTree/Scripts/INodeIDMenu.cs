@@ -2,18 +2,12 @@
 // Author: Eiquif
 // Last Updated: January 2026
 //***************************************************************************************
+using Eiquif.UpgradeTree.Runtime;
+
 namespace Eiquif.UpgradeTree.Editor
 {
-    public sealed class SummaryEmptyElement : IElement
+    public interface INodeIDMenu
     {
-        public void Execute()
-        {
-            EditorEmptyStates.Draw(
-                "📊",
-                "No Data",
-                "Add nodes to see statistics"
-            );
-        }
+        void Show(Node node);
     }
-
 }
