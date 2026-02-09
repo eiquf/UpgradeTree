@@ -2,6 +2,7 @@
 // Author: Eiquif
 // Last Updated: January 2026
 //***************************************************************************************
+
 /// <summary>
 /// Represents a single upgrade node within a NodeTree.
 ///
@@ -53,5 +54,6 @@ namespace Eiquif.UpgradeTree.Runtime
         public NodeID ID => _id;
         public string Name => _displayName;
         public Sprite Icon => _icon;
+        public SkillSO Stats => _stats;
     }
 }

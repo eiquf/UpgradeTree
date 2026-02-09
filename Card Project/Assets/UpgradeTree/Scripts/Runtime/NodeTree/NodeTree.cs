@@ -2,7 +2,6 @@
 // Author: Eiquif
 // Last Updated: January 2026
 //***************************************************************************************
-using Eiquif.UpgradeTree.Runtime;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
@@ -26,19 +25,22 @@ using UnityEngine;
 /// Nodes should not exist or be manipulated independently of a NodeTree.
 /// Any editor or runtime logic must treat NodeTree as the source of truth.
 /// </summary>
-[CreateAssetMenu(fileName = "NodeTree", menuName = "NodeTree/NodeTree")]
-public class NodeTree : ScriptableObject
+namespace Eiquif.UpgradeTree.Runtime
 {
-    /// <summary>
-    /// All nodes belonging to this tree.
-    /// Nodes are considered children of this NodeTree and should not be shared
-    /// between different trees.
-    /// </summary>
-    public List<Node> Nodes = new();
+    [CreateAssetMenu(fileName = "NodeTree", menuName = "NodeTree/NodeTree")]
+    public class NodeTree : ScriptableObject
+    {
+        /// <summary>
+        /// All nodes belonging to this tree.
+        /// Nodes are considered children of this NodeTree and should not be shared
+        /// between different trees.
+        /// </summary>
+        public List<Node> Nodes = new();
 
-    /// <summary>
-    /// Registry of all valid IDs available for nodes in this tree.
-    /// Acts as a centralized ID database to ensure consistency and validation.
-    /// </summary>
-    public List<string> IDs = new();
+        /// <summary>
+        /// Registry of all valid IDs available for nodes in this tree.
+        /// Acts as a centralized ID database to ensure consistency and validation.
+        /// </summary>
+        public List<string> IDs = new();
+    }
 }

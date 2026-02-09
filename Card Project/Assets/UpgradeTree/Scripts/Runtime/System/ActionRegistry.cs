@@ -9,25 +9,25 @@ namespace Eiquif.UpgradeTree.Runtime
 {
     public class ActionRegistry
     {
-        private readonly Dictionary<string, Action<Node>> _events = new();
+        private readonly Dictionary<string, Action<SkillSO>> _events = new();
 
-        public void Subscribe(string id, Action<Node> callback)
+        public void Subscribe(string id, Action<SkillSO> callback)
         {
             if (string.IsNullOrEmpty(id)) return;
             if (!_events.ContainsKey(id)) _events[id] = delegate { };
             _events[id] += callback;
         }
 
-        public void Unsubscribe(string id, Action<Node> callback)
+        public void Unsubscribe(string id, Action<SkillSO> callback)
         {
             if (_events.ContainsKey(id)) _events[id] -= callback;
         }
 
-        public void Invoke(string id, Node node)
+        public void Invoke(Node node)
         {
-            if (_events.TryGetValue(id, out var action))
+            if (_events.TryGetValue(node.ID.Value, out var action))
             {
-                action?.Invoke(node);
+                action?.Invoke(node.Stats);
             }
         }
     }

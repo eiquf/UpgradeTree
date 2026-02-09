@@ -4,10 +4,7 @@
 //***************************************************************************************
 using Eiquif.UpgradeTree.Runtime;
 
-namespace Eiquif.UpgradeTree.Editor
+public interface INodeIDMenu
 {
-    public interface INodeIDMenu
-    {
-        void Show(Node node);
-    }
+    void Show(Node node);
 }

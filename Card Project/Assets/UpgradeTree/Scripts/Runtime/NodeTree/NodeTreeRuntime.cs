@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Eiquif.UpgradeTree.Runtime
 {
-    public class UpgradeTreeRuntime : MonoBehaviour
+    public class NodeTreeRuntime : MonoBehaviour
     {
         [SerializeField] private GameObject _nodeUIPrefab;
         [SerializeField] private RectTransform _container;
@@ -11,7 +11,11 @@ namespace Eiquif.UpgradeTree.Runtime
         [SerializeField] private NodeTree _tree;
 
         private ActionsRuntimeRegistration _reg;
-        private UpgradeTreeDisplay _display;
+        private NodeTreeDisplay _display;
+
+
+        [SerializeField, NodeID(nameof(_tree))]
+        private string _startNodeID;
         private void OnEnable()
         {
             Initialization();
@@ -33,7 +37,7 @@ namespace Eiquif.UpgradeTree.Runtime
             _display = new(_tree, _nodeUIPrefab, _container);
         }
 
-        public void Subscribe(string eventId, Action<Node> callback) => _reg.Subscribe(eventId, callback);
-        public void Unsubscribe(string eventId, Action<Node> callback) => _reg.Subscribe(eventId, callback);
+        public void Subscribe(string eventId, Action<SkillSO> callback) => _reg.Subscribe(eventId, callback);
+        public void Unsubscribe(string eventId, Action<SkillSO> callback) => _reg.Unsubscribe(eventId, callback);
     }
 }
