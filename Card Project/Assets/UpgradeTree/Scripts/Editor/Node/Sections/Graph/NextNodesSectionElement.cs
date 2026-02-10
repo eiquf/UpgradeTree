@@ -22,7 +22,8 @@ namespace Eiquif.UpgradeTree.Editor
                 ctx.NextProp,
                 "Next Nodes",
                 EditorColors.PrimaryColor,
-                ctx
+                ctx,
+                false
             );
 
             CollapsibleSection.Draw(

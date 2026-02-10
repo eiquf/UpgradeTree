@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
+using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// Runtime system responsible for visualizing an upgrade tree.
@@ -45,7 +49,9 @@ namespace Eiquif.UpgradeTree.Runtime
         public NodeTreeDisplay(
             NodeTree tree,
             GameObject nodeUIPrefab,
-            RectTransform container)
+            RectTransform container,
+            INodeUnlockCondition condition,
+            IProgressionProvider progression)
             : base(tree)
         {
             _nodeUIPrefab = nodeUIPrefab;
@@ -54,7 +60,9 @@ namespace Eiquif.UpgradeTree.Runtime
             _createNodeButtons = new CreateNodeButtons(
                 _nodeUIPrefab,
                 _spawnedNodes,
-                Tree);
+                Tree,
+                condition,
+                progression);
 
             _createConnectionLine = new CreateNodeLine();
         }

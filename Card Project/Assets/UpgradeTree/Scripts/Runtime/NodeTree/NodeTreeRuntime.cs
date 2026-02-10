@@ -1,43 +1,40 @@
-using System;
+//***************************************************************************************
+// Author: Eiquif
+// Last Updated: January 2026
+//***************************************************************************************
 using UnityEngine;
 
 namespace Eiquif.UpgradeTree.Runtime
 {
     public class NodeTreeRuntime : MonoBehaviour
     {
+        [Header("Data")]
+        [SerializeField] private NodeTree _tree;
+
+        [Header("UI Settings")]
         [SerializeField] private GameObject _nodeUIPrefab;
         [SerializeField] private RectTransform _container;
 
-        [SerializeField] private NodeTree _tree;
+        [Header("Injectable Logic")]
+        [Tooltip("Drop here a progression SO")]
+        [SerializeField] private ProgressionProviderSO _progressionAsset;
 
-        private ActionsRuntimeRegistration _reg;
+        [Tooltip("Drop here condition SO")]
+        [SerializeField] private UnlockConditionSO _conditionAsset;
+
         private NodeTreeDisplay _display;
 
-
-        [SerializeField, NodeID(nameof(_tree))]
-        private string _startNodeID;
         private void OnEnable()
         {
-            Initialization();
-        }
-        private void Start()
-        {
-            _reg.Execute();
-            _display.Execute();
+            if (_progressionAsset == null || _conditionAsset == null)
+            {
+                Debug.LogError("NodeTreeRuntime: Missing Logic Assets!");
+                return;
+            }
 
-        }
-        private void FixedUpdate()
-        {
-            _reg.OnNodeClicked(_tree.Nodes[0]);
-
-        }
-        private void Initialization()
-        {
-            _reg = new(_tree);
-            _display = new(_tree, _nodeUIPrefab, _container);
+            _display = new(_tree, _nodeUIPrefab, _container, _conditionAsset, _progressionAsset);
         }
 
-        public void Subscribe(string eventId, Action<SkillSO> callback) => _reg.Subscribe(eventId, callback);
-        public void Unsubscribe(string eventId, Action<SkillSO> callback) => _reg.Unsubscribe(eventId, callback);
+        private void Start() => _display?.Execute();
     }
 }

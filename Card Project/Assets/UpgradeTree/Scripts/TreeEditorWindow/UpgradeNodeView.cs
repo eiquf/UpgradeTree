@@ -14,32 +14,39 @@ namespace Eiquif.UpgradeTree.Editor
     {
         public RuntimeNode Data { get; }
 
-        private readonly GraphNode _graph;
         public Port In { get; }
         public Port Out { get; }
 
         private IElement<RuntimeNode> _foldoutView;
         private IElement<RuntimeNode> _icon;
+
         public UpgradeNodeView(RuntimeNode data)
         {
-            Data = data;
-            _graph = this;
+            if (data == null)
+                throw new System.ArgumentNullException(nameof(data));
 
-            title = string.IsNullOrEmpty(data.Name) ? data.name : data.Name;
+            Data = data;
+
+            title = string.IsNullOrEmpty(data.Name)
+                ? data.name
+                : data.Name;
+
             viewDataKey = data.GetInstanceID().ToString();
 
-            SetPosition(new Rect(data.position, new Vector2(220, 130)));
+            SetPosition(new Rect(
+                data.position,
+                new Vector2(220, 130)));
 
             Init();
             CreateFoldout();
-            Icon();
+            CreateIcon();
 
             In = InstantiatePort(
                 Orientation.Horizontal,
                 Direction.Input,
                 Port.Capacity.Multi,
-                typeof(bool)
-            );
+                typeof(bool));
+
             In.portName = "In";
             inputContainer.Add(In);
 
@@ -47,28 +54,36 @@ namespace Eiquif.UpgradeTree.Editor
                 Orientation.Horizontal,
                 Direction.Output,
                 Port.Capacity.Multi,
-                typeof(bool)
-            );
+                typeof(bool));
+
             Out.portName = "Out";
             outputContainer.Add(Out);
-
 
             RefreshExpandedState();
             RefreshPorts();
         }
+
         private void Init()
         {
-            _foldoutView = new CreateNodeViewFoldOut(_graph);
-            _icon = new CreateIconNodeView(_graph);
+            _foldoutView = new CreateNodeViewFoldOut(this);
+            _icon = new CreateIconNodeView(this);
         }
+
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
 
+            if (Data == null)
+                return;
+
             Data.position = newPos.position;
             EditorUtility.SetDirty(Data);
         }
-        private void Icon() => _icon.Execute(Data);
-        private void CreateFoldout() => _foldoutView.Execute(Data);
+
+        private void CreateIcon() =>
+            _icon.Execute(Data);
+
+        private void CreateFoldout() =>
+            _foldoutView.Execute(Data);
     }
 }

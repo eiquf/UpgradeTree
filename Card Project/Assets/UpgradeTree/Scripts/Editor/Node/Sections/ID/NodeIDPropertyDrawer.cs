@@ -21,7 +21,7 @@ namespace Eiquif.UpgradeTree.Editor
                 EditorGUI.LabelField(position, label.text, "Assign NodeTree");
                 return;
             }
-
+            
             EditorGUI.BeginProperty(position, label, property);
 
             Rect contentRect = EditorGUI.PrefixLabel(position, label);

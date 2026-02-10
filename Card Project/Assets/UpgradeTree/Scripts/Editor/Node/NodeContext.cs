@@ -18,17 +18,14 @@ namespace Eiquif.UpgradeTree.Runtime
 
         public NodeContext(
             SerializedObject so,
-            Node node,
-            SerializedProperty next,
-            SerializedProperty prerequisite)
+            Node node)
         {
-
             IDMenu = new NodeIDMenu();
 
             SerializedObject = so;
             Node = node;
-            NextProp = next;
-            PrerequisiteProp = prerequisite;
+            NextProp = so.FindProperty(NodePropertiesNames.NextNodes);
+            PrerequisiteProp = so.FindProperty(NodePropertiesNames.PrerequisiteNodes);
         }
 
         public void UpdateTime(double time) => LastUpdateTime = time;

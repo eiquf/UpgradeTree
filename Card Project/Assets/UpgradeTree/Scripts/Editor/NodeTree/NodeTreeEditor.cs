@@ -21,18 +21,19 @@ namespace Eiquif.UpgradeTree.Editor
         private EditorNames _names;
 
         private Section _node;
-        private Section _summary;
         private Section _id;
         #endregion
 
         private void OnEnable()
         {
-            _tree = (NodeTree)target;
+            if (target == null) return;
+
+            _tree = target as NodeTree;
+            if (_tree == null) return;
 
             _context = new NodeTreeContext(_tree, serializedObject);
 
             _node = new NodeSection(_context);
-            _summary = new SummarySection(_context);
             _id = new IDSection(_context);
 
             _names = new NodeTreeEditorNames(_context, _tree.name);
@@ -55,9 +56,6 @@ namespace Eiquif.UpgradeTree.Editor
 
             _node.Draw();
             GUILayout.Space(8);
-
-            _summary.Draw();
-            GUILayout.Space(12);
 
             _names.DrawFooter();
 

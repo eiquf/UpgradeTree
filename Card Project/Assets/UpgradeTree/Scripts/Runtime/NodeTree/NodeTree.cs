@@ -36,7 +36,6 @@ namespace Eiquif.UpgradeTree.Runtime
         /// between different trees.
         /// </summary>
         public List<Node> Nodes = new();
-
         /// <summary>
         /// Registry of all valid IDs available for nodes in this tree.
         /// Acts as a centralized ID database to ensure consistency and validation.

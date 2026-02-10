@@ -43,7 +43,40 @@ namespace Eiquif.UpgradeTree.Editor
         {
             rootVisualElement.Clear();
             BuildUI();
+
+            Undo.undoRedoPerformed += OnExternalDataChanged;
         }
+
+        private void OnDisable()
+        {
+            Undo.undoRedoPerformed -= OnExternalDataChanged;
+        }
+
+        private void OnExternalDataChanged()
+        {
+            if (_tree == null) return;
+
+            EditorApplication.delayCall += () =>
+            {
+                if (this == null) return;
+                Reload();
+                DrawTreeInspector();
+            };
+        }
+        private void MarkDirtyAndReload()
+        {
+            if (_tree == null) return;
+
+            EditorUtility.SetDirty(_tree);
+            Reload();
+        }
+        public void ForceReloadFromAsset(NodeTree tree)
+        {
+            if (_tree != tree) return;
+            Reload();
+            DrawTreeInspector();
+        }
+
 
         #region Initialization
 
@@ -76,7 +109,6 @@ namespace Eiquif.UpgradeTree.Editor
 
             toolbar.Add(treeField);
             toolbar.Add(new Button(CreateNode) { text = "+ NODE" });
-            toolbar.Add(new Button(Reload) { text = "UPDATE" });
             toolbar.Add(new Button(Save) { text = "SAVE" });
 
             rootVisualElement.Add(toolbar);
@@ -102,14 +134,23 @@ namespace Eiquif.UpgradeTree.Editor
 
         #region Graph Callbacks
 
-        public void OnEdgeCreated(Edge edge) =>
+        public void OnEdgeCreated(Edge edge)
+        {
             _edgeCreator?.Execute(edge);
+            MarkDirtyAndReload();
+        }
 
-        public void OnEdgeRemoved(Edge edge) =>
+        public void OnEdgeRemoved(Edge edge)
+        {
             _edgeRemover?.Execute(edge);
+            MarkDirtyAndReload();
+        }
 
-        public void OnNodeRemoved(UpgradeNodeView view) =>
+        public void OnNodeRemoved(UpgradeNodeView view)
+        {
             _nodeRemover?.Execute(view);
+            MarkDirtyAndReload();
+        }
 
         #endregion
 
@@ -129,7 +170,8 @@ namespace Eiquif.UpgradeTree.Editor
             _graph.ClearGraph();
             Normalize(_tree);
 
-            var nodeViewMap = new Dictionary<RuntimeNode, UpgradeNodeView>();
+            var nodeViewMap =
+                new Dictionary<RuntimeNode, UpgradeNodeView>();
 
             foreach (var node in _tree.Nodes)
             {
@@ -146,26 +188,21 @@ namespace Eiquif.UpgradeTree.Editor
 
                 foreach (var next in node.NextNodes)
                 {
-                    if (next != null && nodeViewMap.ContainsKey(next))
+                    if (next != null &&
+                        nodeViewMap.ContainsKey(next))
+                    {
                         _graph.AddElement(
                             nodeViewMap[node].Out
                                 .ConnectTo(nodeViewMap[next].In));
+                    }
                 }
             }
         }
 
         private void Save()
         {
-            if (_tree == null) return;
-
             EditorUtility.SetDirty(_tree);
-
-            foreach (var node in _tree.Nodes)
-                if (node != null)
-                    EditorUtility.SetDirty(node);
-
             AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
         }
 
         #endregion

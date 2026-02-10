@@ -12,28 +12,67 @@ namespace Eiquif.UpgradeTree.Editor
     {
         public Node CreateNode(NodeTree tree)
         {
+            if (tree == null) return null;
+
             Undo.RecordObject(tree, "Create Node");
 
             var node = ScriptableObject.CreateInstance<Node>();
-            node.name = $"Node_{tree.Nodes.Count}";
+            node.name = "Node";
 
-            AssetDatabase.AddObjectToAsset(node, tree);
             Undo.RegisterCreatedObjectUndo(node, "Create Node");
 
             tree.Nodes.Add(node);
+            AssetDatabase.AddObjectToAsset(node, tree);
 
             EditorUtility.SetDirty(tree);
-            EditorUtility.SetDirty(node);
             AssetDatabase.SaveAssets();
+
+            RefreshAllEditors(tree);
 
             return node;
         }
 
+        public void RemoveNode(NodeTree tree, Node node)
+        {
+            if (tree == null || node == null)
+                return;
+
+            Undo.IncrementCurrentGroup();
+            int group = Undo.GetCurrentGroup();
+
+            Undo.RecordObject(tree, "Remove Node");
+
+            foreach (var n in tree.Nodes)
+            {
+                if (n == null || n == node) continue;
+
+                Undo.RecordObject(n, "Remove Node Links");
+                n.NextNodes.Remove(node);
+                n.PrerequisiteNodes.Remove(node);
+                EditorUtility.SetDirty(n);
+            }
+
+            tree.Nodes.Remove(node);
+            EditorUtility.SetDirty(tree);
+
+            Undo.DestroyObjectImmediate(node);
+            Undo.CollapseUndoOperations(group);
+
+            AssetDatabase.SaveAssets();
+
+            RefreshAllEditors(tree);
+        }
+
         public void RemoveAllNodes(NodeTree tree)
         {
+            if (tree == null) return;
+
+            Undo.IncrementCurrentGroup();
+            int group = Undo.GetCurrentGroup();
+
             Undo.RecordObject(tree, "Remove All Nodes");
 
-            foreach (var node in tree.Nodes.ToArray())
+            foreach (var node in tree.Nodes)
             {
                 if (node == null) continue;
                 Undo.DestroyObjectImmediate(node);
@@ -41,26 +80,25 @@ namespace Eiquif.UpgradeTree.Editor
 
             tree.Nodes.Clear();
             EditorUtility.SetDirty(tree);
+
+            Undo.CollapseUndoOperations(group);
+
+            AssetDatabase.SaveAssets();
+
+            RefreshAllEditors(tree);
         }
 
-        public void RemoveNode(NodeTree tree, Node node)
+        private static void RefreshAllEditors(NodeTree tree)
         {
-            if (node == null) return;
+            var editors =
+                Resources.FindObjectsOfTypeAll<UpgradeTreeEditor>();
 
-            Undo.RecordObject(tree, "Remove Node");
-
-            tree.Nodes.Remove(node);
-
-            foreach (var n in tree.Nodes)
+            foreach (var editor in editors)
             {
-                if (n == null) continue;
-                n.NextNodes.Remove(node);
-                n.PrerequisiteNodes.Remove(node);
-                EditorUtility.SetDirty(n);
+                if (editor == null) continue;
+                editor.ForceReloadFromAsset(tree);
+                editor.Repaint();
             }
-
-            Undo.DestroyObjectImmediate(node);
-            EditorUtility.SetDirty(tree);
         }
     }
 }

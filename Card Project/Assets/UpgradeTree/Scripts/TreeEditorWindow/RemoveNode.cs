@@ -7,7 +7,6 @@ using UnityEditor;
 
 namespace Eiquif.UpgradeTree.Editor
 {
-
     public class RemoveNode : IElement<UpgradeNodeView>
     {
         private readonly NodeTree _tree;

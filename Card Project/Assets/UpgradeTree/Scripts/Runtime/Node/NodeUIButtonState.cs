@@ -25,42 +25,40 @@
 /// Any editor or runtime system should treat the NodeTree as the source of truth
 /// and assume that Nodes are valid only while referenced by that tree.
 /// </summary>
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Eiquif.UpgradeTree.Runtime
 {
-    public class Node : ScriptableObject
+    public static class NodeUIButtonState
     {
-        [Header("Info")]
-        [SerializeField] private NodeID _id;
-        [SerializeField] private string _displayName;
-        [SerializeField, TextArea(3, 6)] private string _description;
+        public static void Apply(NodeUIState state, GameObject go)
+        {
+            var button = go.GetComponent<Button>();
+            var cg = go.GetComponent<CanvasGroup>() ?? go.AddComponent<CanvasGroup>();
 
-        [Header("Graph")]
-        public List<Node> NextNodes = new();
-        public List<Node> PrerequisiteNodes = new();
+            switch (state)
+            {
+                case NodeUIState.Hidden:
+                    cg.alpha = 0f;
+                    button.interactable = false;
+                    break;
 
-        [Header("Requirements")]
-        [SerializeField] private int _cost;
-        [SerializeField] private int _parentLevelUnlock;
-        [SerializeField] private int _currentLevel;
-        public bool _unlockIfParentMax = true;
+                case NodeUIState.Locked:
+                    cg.alpha = 0.4f;
+                    button.interactable = false;
+                    break;
 
-        [Header("Other")]
-        [SerializeField] private SkillSO _stats;
-        [SerializeField] private Sprite _icon;
-        [SerializeField] private Sprite _frame;
-        [SerializeField] private Color _unlockedColor;
-        public Vector2 position;
-        public NodeID ID => _id;
-        public string Name => _displayName;
-        public Sprite Icon => _icon;
-        public Sprite Frame => _frame;
-        public SkillSO Stats => _stats;
-        public int ParentUnlockLevel => _parentLevelUnlock;
-        public int Cost => _cost;
-        public bool IsRoot => PrerequisiteNodes == null || PrerequisiteNodes.Count == 0;
-        public Color UnlockedColor => _unlockedColor;
+                case NodeUIState.Unlockable:
+                    cg.alpha = 1f;
+                    button.interactable = true;
+                    break;
+
+                case NodeUIState.Unlocked:
+                    cg.alpha = 1f;
+                    button.interactable = false;
+                    break;
+            }
+        }
     }
 }

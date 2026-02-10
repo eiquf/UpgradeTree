@@ -21,7 +21,8 @@ namespace Eiquif.UpgradeTree.Editor
                 ctx.PrerequisiteProp,
                 "Prerequisite Nodes",
                 EditorColors.SecondaryColor,
-                ctx
+                ctx,
+                false
             );
 
             CollapsibleSection.Draw(

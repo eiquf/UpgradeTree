@@ -4,31 +4,41 @@
 //***************************************************************************************
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Eiquif.UpgradeTree.Runtime
 {
-    public class ActionRegistry
+    public static class ActionRegistry
     {
-        private readonly Dictionary<string, Action<SkillSO>> _events = new();
+        private static readonly Dictionary<string, Action<SkillSO>> _events = new();
 
-        public void Subscribe(string id, Action<SkillSO> callback)
+        public static void Subscribe(string id, Action<SkillSO> callback)
         {
             if (string.IsNullOrEmpty(id)) return;
-            if (!_events.ContainsKey(id)) _events[id] = delegate { };
+
+            if (!_events.ContainsKey(id))
+                _events[id] = delegate { };
+
             _events[id] += callback;
         }
 
-        public void Unsubscribe(string id, Action<SkillSO> callback)
+        public static void Unsubscribe(string id, Action<SkillSO> callback)
         {
-            if (_events.ContainsKey(id)) _events[id] -= callback;
+            if (_events.ContainsKey(id))
+                _events[id] -= callback;
         }
 
-        public void Invoke(Node node)
+        public static void Invoke(Node node)
         {
+            if (node == null) return;
+
             if (_events.TryGetValue(node.ID.Value, out var action))
-            {
                 action?.Invoke(node.Stats);
-            }
+        }
+
+        public static void Clear()
+        {
+            _events.Clear();
         }
     }
 }

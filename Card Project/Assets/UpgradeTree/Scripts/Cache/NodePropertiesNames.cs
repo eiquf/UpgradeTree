@@ -18,4 +18,5 @@ public static class NodePropertiesNames
     public static string Stats { get; } = "_stats";
     public static string Icon { get; } = "_icon";
     public static string Position { get; } = "position";
+    public static string UnlockColor { get; } = "_unlockedColor";
 }

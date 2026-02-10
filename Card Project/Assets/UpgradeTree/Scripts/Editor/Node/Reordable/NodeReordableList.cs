@@ -30,11 +30,12 @@ namespace Eiquif.UpgradeTree.Editor
             SerializedProperty property,
             string header,
             Color badgeColor,
-            ContextSystem ctx)
+            ContextSystem ctx,
+            bool isModifiable)
         {
             _ctx = ctx;
 
-            List = new ReorderableList(so, property, true, true, true, true)
+            List = new ReorderableList(so, property, true, true, isModifiable, isModifiable)
             {
                 elementHeight = 24,
 

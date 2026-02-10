@@ -17,6 +17,7 @@ namespace Eiquif.UpgradeTree.Editor
 
         private readonly SerializedProperty _description;
         private readonly SerializedProperty _pos;
+        private readonly SerializedProperty _color;
         #endregion
 
         private bool _isExpanded;
@@ -30,6 +31,7 @@ namespace Eiquif.UpgradeTree.Editor
 
             _description = so.FindProperty(NodePropertiesNames.Description);
             _pos = so.FindProperty(NodePropertiesNames.Position);
+            _color = so.FindProperty(NodePropertiesNames.UnlockColor);
 
             _drawID = new CreateInfoID(_ctx);
             _drawIcon = new CreateInfoIcon(_so);
@@ -61,6 +63,8 @@ namespace Eiquif.UpgradeTree.Editor
             GUILayout.Space(8);
             DrawIconPreview();
 
+            GUILayout.Space(8);
+            EditorGUILayout.PropertyField(_color);
         }
         private void DrawID() => _drawID.Execute();
         private void DrawIconPreview() => _drawIcon.Execute();

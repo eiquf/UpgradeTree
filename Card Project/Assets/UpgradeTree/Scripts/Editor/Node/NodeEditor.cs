@@ -11,12 +11,7 @@ namespace Eiquif.UpgradeTree.Editor
     [CustomEditor(typeof(Node))]
     public class NodeEditor : UnityEditor.Editor
     {
-        #region Serialized
-        private SerializedProperty _nextProp;
-        private SerializedProperty _prerequisiteProp;
-
         private SerializedObject _so;
-        #endregion
 
         private Node _node;
         private NodeContext _ctx;
@@ -61,16 +56,17 @@ namespace Eiquif.UpgradeTree.Editor
         private void Init()
         {
             InitProperties();
-            _ctx = new NodeContext(_so, _node, _nextProp, _prerequisiteProp);
+            _ctx = new NodeContext(_so, _node);
             InitSections();
         }
         private void InitProperties()
         {
-            _node = (Node)target;
-            _so = new SerializedObject(target);
+            if (target == null) return; 
 
-            _nextProp = serializedObject.FindProperty(NodePropertiesNames.NextNodes);
-            _prerequisiteProp = serializedObject.FindProperty(NodePropertiesNames.PrerequisiteNodes);
+            _node = target as Node;
+            if (_node == null) return; 
+
+            _so = serializedObject;
         }
         private void InitSections()
         {
