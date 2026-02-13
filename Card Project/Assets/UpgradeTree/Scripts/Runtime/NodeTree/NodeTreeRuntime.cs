@@ -21,10 +21,15 @@ namespace Eiquif.UpgradeTree.Runtime
         private void Awake()
         {
             if (_tree.ProgressionProvider == null)
-                Debug.LogError("No Progression SO assigned.  Please create runtime progression.");
+            {
+                Debug.LogError("No Progression SO assigned.");
+                return;
+            }
 
-            if (_tree.UnlockCondition == null)
-                Debug.LogError("No Condition SO assigned. Please create condition.");
+            if (_tree.ProgressionProvider is TestGameProgression progression)
+                progression.Initialize();
+            else
+                _tree.ProgressionProvider.Load();
 
             _provider = _tree.ProgressionProvider;
 
@@ -33,7 +38,6 @@ namespace Eiquif.UpgradeTree.Runtime
             else
                 Debug.LogError("Progression SO must implement IProgressionWriter!");
         }
-
 
         private void Start()
         {

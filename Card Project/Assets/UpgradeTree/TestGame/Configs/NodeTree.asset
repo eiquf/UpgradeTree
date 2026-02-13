@@ -81,8 +81,8 @@ MonoBehaviour:
   - NewID_0
   - NewID_1
   - NewID_2
-  ProgressionProvider: {fileID: 0}
-  UnlockCondition: {fileID: 0}
+  ProgressionProvider: {fileID: 11400000, guid: 6c275f91c9221b14cb1ad141202a05b2, type: 2}
+  UnlockCondition: {fileID: 11400000, guid: 529bdae936dda5143a7d8368335f92a0, type: 2}
 --- !u!114 &473713626291985136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,11 +102,11 @@ MonoBehaviour:
   NextNodes:
   - {fileID: 6713351351794993483}
   PrerequisiteNodes: []
-  _cost: 0
-  _parentLevelUnlock: 0
+  _cost: 5
+  _parentLevelUnlock: 5
   _currentLevel: 0
   _unlockIfParentMax: 1
-  _stats: {fileID: 0}
+  _stats: {fileID: 11400000, guid: ea2e6e24e8c33974c96e4d61aebbd40b, type: 2}
   _icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   _frame: {fileID: 0}
   _unlockedColor: {r: 0.6075471, g: 0.22811668, b: 0.22811668, a: 1}
@@ -133,11 +133,11 @@ MonoBehaviour:
   - {fileID: -4860928766506559286}
   PrerequisiteNodes:
   - {fileID: 473713626291985136}
-  _cost: 0
-  _parentLevelUnlock: 0
+  _cost: 50
+  _parentLevelUnlock: 4
   _currentLevel: 0
   _unlockIfParentMax: 1
-  _stats: {fileID: 0}
+  _stats: {fileID: 11400000, guid: ea2e6e24e8c33974c96e4d61aebbd40b, type: 2}
   _icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   _frame: {fileID: 0}
   _unlockedColor: {r: 0.6830188, g: 0.4626486, b: 0.4626486, a: 1}

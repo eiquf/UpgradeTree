@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b83695716cd4e3a4fab8786573a904f2, type: 3}
   m_Name: TestGameProgression
   m_EditorClassIdentifier: 
-  _startCurrency: 100
+  _startCurrency: 10

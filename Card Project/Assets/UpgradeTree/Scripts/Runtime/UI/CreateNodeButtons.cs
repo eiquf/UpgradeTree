@@ -12,15 +12,13 @@ public class CreateNodeButtons : IElement<RectTransform>
     private readonly NodeTree _tree;
     private readonly GameObject _nodeUIPrefab;
     private readonly Dictionary<Node, GameObject> _spawnedNodes;
-    private readonly INodeUnlockCondition _unlockCondition;
-    private readonly IProgressionProvider _provider;
     private readonly UpgradeUnlockService _unlockService;
 
     public CreateNodeButtons(
-     GameObject nodeUIPrefab,
-     Dictionary<Node, GameObject> spawnedNodes,
-     NodeTree tree,
-     UpgradeUnlockService unlockService)
+        GameObject nodeUIPrefab,
+        Dictionary<Node, GameObject> spawnedNodes,
+        NodeTree tree,
+        UpgradeUnlockService unlockService)
     {
         _tree = tree;
         _nodeUIPrefab = nodeUIPrefab;
@@ -64,7 +62,7 @@ public class CreateNodeButtons : IElement<RectTransform>
 
             bool isUnlocked = _unlockService.Provider.IsNodeUnlocked(node.ID);
 
-            bool isVisible = node.IsRoot || AreAllPrerequisitesUnlocked(node);
+            bool isVisible = _unlockService.IsVisible(node);
             go.SetActive(isVisible);
 
             if (!isVisible)
@@ -77,20 +75,6 @@ public class CreateNodeButtons : IElement<RectTransform>
             UpdateVisual(go, node, isUnlocked, conditionsApproved);
         }
     }
-    private bool AreAllPrerequisitesUnlocked(Node node)
-    {
-        if (node.PrerequisiteNodes == null || node.PrerequisiteNodes.Count == 0)
-            return true;
-
-        foreach (var prereq in node.PrerequisiteNodes)
-        {
-            if (!_unlockService.Provider.IsNodeUnlocked(prereq.ID))
-                return false;
-        }
-
-        return true;
-    }
-
 
     private void UpdateVisual(GameObject go, Node node,
         bool isUnlocked, bool canUnlock)

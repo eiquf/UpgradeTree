@@ -1,4 +1,4 @@
-using Eiquif.UpgradeTree.Runtime;
+﻿using Eiquif.UpgradeTree.Runtime;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +10,7 @@ public class TestGameProgression : ProgressionProviderSO
     private int _currency;
     private readonly HashSet<string> _unlockedNodes = new();
 
-    private void OnEnable()
+    public void Initialize()
     {
         Load();
         SyncFromSave();
@@ -18,18 +18,23 @@ public class TestGameProgression : ProgressionProviderSO
 
     private void SyncFromSave()
     {
-        if (_data == null)
+        if (!_data.Initialized)
         {
-            ResetRuntimeState();
+            _currency = _startCurrency;
+            _unlockedNodes.Clear();
+
+            _data.Initialized = true;
+            SyncToSave();
             return;
         }
 
-        _currency = _data.SavedCurrency == 0 ? _startCurrency : _data.SavedCurrency;
+        _currency = _data.SavedCurrency;
 
         _unlockedNodes.Clear();
-        foreach (var id in _data.UnlockedNodeIds)
+        if (_data.UnlockedNodeIds != null)
         {
-            _unlockedNodes.Add(id);
+            foreach (var id in _data.UnlockedNodeIds)
+                _unlockedNodes.Add(id);
         }
     }
 
@@ -58,12 +63,15 @@ public class TestGameProgression : ProgressionProviderSO
 
     public override bool IsNodeUnlocked(NodeID id)
     {
-        return _unlockedNodes.Contains(id.Value); 
+        return _unlockedNodes.Contains(id.Value);
     }
 
     public override void UnlockNode(Node node)
     {
         if (_unlockedNodes.Contains(node.ID.Value))
+            return;
+
+        if (_currency < node.Cost)
             return;
 
         _unlockedNodes.Add(node.ID.Value);
@@ -76,9 +84,9 @@ public class TestGameProgression : ProgressionProviderSO
     {
         ResetRuntimeState();
 
-        _data.SavedCurrency = _currency;
-        _data.UnlockedNodeIds = new List<string>(_unlockedNodes);
-        Save();
-        Debug.Log("Progression cleared on disk and in memory.");
+        _data.Initialized = true;
+        SyncToSave();
+
+        Debug.Log("Progression reset (memory + disk).");
     }
 }
