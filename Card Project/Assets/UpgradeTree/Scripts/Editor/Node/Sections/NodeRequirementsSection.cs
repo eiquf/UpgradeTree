@@ -2,6 +2,8 @@
 // Author: Eiquif
 // Last Updated: January 2026
 //***************************************************************************************
+using Codice.Client.Common.GameUI;
+using Eiquif.UpgradeTree.Runtime;
 using UnityEditor;
 
 namespace Eiquif.UpgradeTree.Editor

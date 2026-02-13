@@ -2,7 +2,7 @@ using Eiquif.UpgradeTree.Runtime;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TestGameProgression", menuName = "UpgradeTree/TestGameProgression")]
+[CreateAssetMenu(fileName = "TestGameProgression", menuName = "UpgradeTree/Progression/Default Progression")]
 public class TestGameProgression : ProgressionProviderSO
 {
     [SerializeField] private int _startCurrency = 100;

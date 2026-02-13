@@ -27,8 +27,9 @@ MonoBehaviour:
   _stats: {fileID: 0}
   _icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   _frame: {fileID: 0}
-  _unlockedColor: {r: 0.4490565, g: 0.016098188, b: 0.016098188, a: 0}
-  position: {x: 153.21437, y: 74.03975}
+  _unlockedColor: {r: 0.4490565, g: 0.016098188, b: 0.016098188, a: 1}
+  _unlockableColor: {r: 0, g: 0, b: 0, a: 0}
+  position: {x: 143.8055, y: 74.399994}
   _conditions: []
 --- !u!114 &-2305954107257437762
 MonoBehaviour:
@@ -57,6 +58,7 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _frame: {fileID: 0}
   _unlockedColor: {r: 0, g: 0, b: 0, a: 0}
+  _unlockableColor: {r: 0, g: 0, b: 0, a: 0}
   position: {x: 292.49936, y: 74.399994}
   _conditions: []
 --- !u!114 &11400000
@@ -79,6 +81,8 @@ MonoBehaviour:
   - NewID_0
   - NewID_1
   - NewID_2
+  ProgressionProvider: {fileID: 0}
+  UnlockCondition: {fileID: 0}
 --- !u!114 &473713626291985136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +109,8 @@ MonoBehaviour:
   _stats: {fileID: 0}
   _icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   _frame: {fileID: 0}
-  _unlockedColor: {r: 0.6075471, g: 0.22811668, b: 0.22811668, a: 0}
+  _unlockedColor: {r: 0.6075471, g: 0.22811668, b: 0.22811668, a: 1}
+  _unlockableColor: {r: 0, g: 0, b: 0, a: 0}
   position: {x: -129.23264, y: 74.399994}
   _conditions: []
 --- !u!114 &6713351351794993483
@@ -135,6 +140,7 @@ MonoBehaviour:
   _stats: {fileID: 0}
   _icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   _frame: {fileID: 0}
-  _unlockedColor: {r: 0.6830188, g: 0.4626486, b: 0.4626486, a: 0}
+  _unlockedColor: {r: 0.6830188, g: 0.4626486, b: 0.4626486, a: 1}
+  _unlockableColor: {r: 0, g: 0, b: 0, a: 0}
   position: {x: 14.433329, y: 74.399994}
   _conditions: []

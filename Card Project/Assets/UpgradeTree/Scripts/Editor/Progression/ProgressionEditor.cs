@@ -24,23 +24,23 @@ namespace Eiquif.UpgradeTree.Editor
             _ctx = new ProgressionContext(_so, serializedObject);
 
             _names = new ProgressionEditorNames(_ctx, _so.name);
-            _resetSection = new ResetSection(_ctx);
+            _resetSection = new ResetSection(_so);
             _otherSection = new ProgressionOthersSection(_ctx);
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
             _names.DrawHeader();
 
             GUILayout.Space(12);
             _resetSection.Draw();
 
-            GUILayout.Space(8);
             _otherSection.Draw();
-
             GUILayout.Space(12);
             _names.DrawFooter();
+
             serializedObject.ApplyModifiedProperties();
         }
     }

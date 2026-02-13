@@ -27,7 +27,7 @@ using UnityEngine;
 /// </summary>
 namespace Eiquif.UpgradeTree.Runtime
 {
-    [CreateAssetMenu(fileName = "NodeTree", menuName = "NodeTree/NodeTree")]
+    [CreateAssetMenu(fileName = "NodeTree", menuName = "UpgradeTree/NodeTree")]
     public class NodeTree : ScriptableObject
     {
         /// <summary>
@@ -41,5 +41,8 @@ namespace Eiquif.UpgradeTree.Runtime
         /// Acts as a centralized ID database to ensure consistency and validation.
         /// </summary>
         public List<string> IDs = new();
+
+        public ProgressionProviderSO ProgressionProvider;
+        public UnlockConditionSO UnlockCondition;
     }
 }

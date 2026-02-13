@@ -1,7 +1,7 @@
 using Eiquif.UpgradeTree.Runtime;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TestGameCondition", menuName = "NodeTree/TestGameCondition")]
+[CreateAssetMenu(fileName = "TestGameCondition", menuName = "UpgradeTree/Condition/TestGameCondition")]
 public class TestGameCondition : UnlockConditionSO
 {
     public override bool CanUnlock(Node node, IProgressionProvider progression)

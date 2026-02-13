@@ -7,6 +7,6 @@ namespace Eiquif.UpgradeTree.Editor
 {
     public static class VersionData
     {
-        public static float Version { get; } = 1.0f;
+        public static float Version { get; } = 1.00f;
     }
 }

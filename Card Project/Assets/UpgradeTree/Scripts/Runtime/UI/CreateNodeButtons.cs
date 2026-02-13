@@ -64,15 +64,33 @@ public class CreateNodeButtons : IElement<RectTransform>
 
             bool isUnlocked = _unlockService.Provider.IsNodeUnlocked(node.ID);
 
-            bool canUnlock = _unlockService.CanUnlock(node);
-            bool isVisible = _unlockService.IsVisible(node);
-
+            bool isVisible = node.IsRoot || AreAllPrerequisitesUnlocked(node);
             go.SetActive(isVisible);
-            button.interactable = !isUnlocked && canUnlock;
 
-            UpdateVisual(go, node, isUnlocked, canUnlock);
+            if (!isVisible)
+                continue;
+
+            bool conditionsApproved = _unlockService.CanUnlock(node);
+
+            button.interactable = !isUnlocked && conditionsApproved;
+
+            UpdateVisual(go, node, isUnlocked, conditionsApproved);
         }
     }
+    private bool AreAllPrerequisitesUnlocked(Node node)
+    {
+        if (node.PrerequisiteNodes == null || node.PrerequisiteNodes.Count == 0)
+            return true;
+
+        foreach (var prereq in node.PrerequisiteNodes)
+        {
+            if (!_unlockService.Provider.IsNodeUnlocked(prereq.ID))
+                return false;
+        }
+
+        return true;
+    }
+
 
     private void UpdateVisual(GameObject go, Node node,
         bool isUnlocked, bool canUnlock)
@@ -93,6 +111,17 @@ public class CreateNodeButtons : IElement<RectTransform>
         var text = go.GetComponentInChildren<TMPro.TextMeshProUGUI>();
         if (text != null)
             text.text = node.Name;
+
+        var images = go.GetComponentsInChildren<Image>();
+
+        foreach (var img in images)
+        {
+            if (img.gameObject.name == "Icon")
+            {
+                img.sprite = node.Icon;
+                img.enabled = node.Icon != null;
+            }
+        }
 
         if (go.TryGetComponent<RectTransform>(out var rect))
         {

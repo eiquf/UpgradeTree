@@ -8,4 +8,6 @@ public static class NodeTreePropertiesNames
 {
     public static string Nodes { get; } = "Nodes";
     public static string IDs { get; } = "IDs";
+    public static string UnlockCondition { get; } = "ProgressionProvider";
+    public static string Progression { get; } = "UnlockCondition";
 }

@@ -10,15 +10,15 @@ namespace Eiquif.UpgradeTree.Editor
 {
     public class ResetSection : Section
     {
-        private readonly ProgressionContext _context;
-        public ResetSection(ContextSystem context) : base(context) { _context = (ProgressionContext)context; }
+        private readonly ProgressionProviderSO _so;
 
-        public override void Draw()
+        public ResetSection(ProgressionProviderSO so)
+            : base(null)
         {
-            DrawButton();
+            _so = so;
         }
 
-        private void DrawButton()
+        public override void Draw()
         {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Debug Tools", EditorStyles.boldLabel);
@@ -29,13 +29,15 @@ namespace Eiquif.UpgradeTree.Editor
             {
                 GUI.FocusControl(null);
 
-                if (EditorUtility.DisplayDialog("Reset Progression?",
+                if (EditorUtility.DisplayDialog(
+                    "Reset Progression?",
                     "Are you sure you want to wipe all progression data? This cannot be undone.",
-                    "Yes, Reset", "Cancel"))
+                    "Yes, Reset",
+                    "Cancel"))
                 {
-                    _context.So.ResetProgression();
+                    _so.ResetProgression();
 
-                    EditorUtility.SetDirty(_context.So);
+                    EditorUtility.SetDirty(_so);
                     AssetDatabase.SaveAssets();
 
                     Debug.Log("<color=red>Progression has been reset and saved.</color>");
@@ -46,4 +48,5 @@ namespace Eiquif.UpgradeTree.Editor
             EditorGUILayout.EndVertical();
         }
     }
+
 }

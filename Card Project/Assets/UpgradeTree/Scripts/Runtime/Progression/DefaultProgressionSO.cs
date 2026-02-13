@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Eiquif.UpgradeTree.Runtime;
+using System.Collections.Generic;
 using UnityEngine;
-using Eiquif.UpgradeTree.Runtime;
 
-[CreateAssetMenu(fileName = "DefaultProgression",
-    menuName = "UpgradeTree/Default Progression")]
-public class DefaultProgressionSO :
-    ProgressionProviderSO
+[CreateAssetMenu(fileName = "DefaultProgression", menuName = "UpgradeTree/Progression/Default Progression")]
+public class DefaultProgressionSO : ProgressionProviderSO
 {
     [SerializeField] private int _startCurrency = 100;
 
@@ -44,8 +42,7 @@ public class DefaultProgressionSO :
     public override void AddCurrency(int amount) => _currency += amount;
 }
 
-[CreateAssetMenu(fileName = "DefaultCondition",
-    menuName = "UpgradeTree/Default Condition")]
+[CreateAssetMenu(fileName = "DefaultCondition", menuName = "UpgradeTree/Condition/Default Condition")]
 public class DefaultUnlockConditionSO : UnlockConditionSO
 {
     public override bool CanUnlock(Node node, IProgressionProvider progression)

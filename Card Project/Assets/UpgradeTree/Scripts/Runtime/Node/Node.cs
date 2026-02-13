@@ -52,6 +52,7 @@ namespace Eiquif.UpgradeTree.Runtime
         [SerializeField] private Sprite _icon;
         [SerializeField] private Sprite _frame;
         [SerializeField] private Color _unlockedColor;
+        [SerializeField] private Color _unlockableColor;
         public Vector2 position;
 
         [SerializeField]
@@ -68,5 +69,6 @@ namespace Eiquif.UpgradeTree.Runtime
         public int Cost => _cost;
         public bool IsRoot => PrerequisiteNodes == null || PrerequisiteNodes.Count == 0;
         public Color UnlockedColor => _unlockedColor;
+        public Color UnlockableColor => _unlockableColor;
     }
 }

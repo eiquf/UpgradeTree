@@ -16,7 +16,7 @@ namespace Eiquif.UpgradeTree.Editor
             GUILayout.FlexibleSpace();
 
             GUILayout.Label(
-                $"Node Tree Editor v+{VersionData.Version}",
+                $"Node Tree Editor v{VersionData.Version}",
                 new GUIStyle(EditorStyles.centeredGreyMiniLabel) { fontSize = 9 }
             );
 

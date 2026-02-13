@@ -22,6 +22,8 @@ namespace Eiquif.UpgradeTree.Editor
 
         private Section _node;
         private Section _id;
+
+        private Section _requirements;
         #endregion
 
         private void OnEnable()
@@ -35,6 +37,7 @@ namespace Eiquif.UpgradeTree.Editor
 
             _node = new NodeSection(_context);
             _id = new IDSection(_context);
+            _requirements = new NodeTreeRequirements(_context);
 
             _names = new NodeTreeEditorNames(_context, _tree.name);
         }
@@ -56,6 +59,8 @@ namespace Eiquif.UpgradeTree.Editor
 
             _node.Draw();
             GUILayout.Space(8);
+
+            _requirements.Draw();
 
             _names.DrawFooter();
 
