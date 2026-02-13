@@ -5,15 +5,12 @@
 
 namespace Eiquif.UpgradeTree.Editor
 {
-    public sealed class HeaderBordersElement : IElement<NodeTreeHeaderContext>
+    public sealed class ProgressionHeaderBordersElement : IElement<ProgressionHeaderContext>
     {
-        public void Execute(NodeTreeHeaderContext ctx)
+        public void Execute(ProgressionHeaderContext ctx)
         {
             if (ctx == null) return;
-
-            EditorDrawPrimitives.DrawBorder(ctx.Rect,
-                EditorColors.PrimaryColor,
-                2);
+            EditorDrawPrimitives.DrawBorder(ctx.Rect, EditorColors.PrimaryColor, 2);
         }
     }
 }

@@ -53,6 +53,12 @@ namespace Eiquif.UpgradeTree.Runtime
         [SerializeField] private Sprite _frame;
         [SerializeField] private Color _unlockedColor;
         public Vector2 position;
+
+        [SerializeField]
+        private List<UnlockConditionSO> _conditions = new();
+
+        public IReadOnlyList<UnlockConditionSO> Conditions => _conditions;
+
         public NodeID ID => _id;
         public string Name => _displayName;
         public Sprite Icon => _icon;

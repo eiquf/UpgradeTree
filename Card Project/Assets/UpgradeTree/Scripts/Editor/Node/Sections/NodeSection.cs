@@ -91,7 +91,7 @@ namespace Eiquif.UpgradeTree.Editor
 
                         AssetDatabase.SaveAssets();
 
-                        editor?.Repaint();
+                        editor.Repaint();
                         Selection.activeObject = tree;
                     };
                 }

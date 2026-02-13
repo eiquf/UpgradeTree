@@ -7,60 +7,61 @@ using UnityEngine;
 
 namespace Eiquif.UpgradeTree.Runtime
 {
-    public class LocalProgressionService : IProgressionProvider
+    public class LocalProgressionService :
+        IProgressionProvider,
+        IProgressionWriter
     {
         private UpgradeTreeSaveData _data = new();
-        private readonly string _savePath = Path.Combine(Application.persistentDataPath, "upgrades.json");
+        private readonly string _savePath =
+            Path.Combine(Application.persistentDataPath, "upgrades.json");
 
         public LocalProgressionService() => Load();
 
-        public bool IsNodeUnlocked(NodeID id)
-        {
-            return _data.UnlockedNodeIds.Contains(id.Value);
-        }
+        public bool IsNodeUnlocked(NodeID id) => _data.UnlockedNodeIds.Contains(id.Value);
+
+        public int GetCurrentCurrency() => _data.SavedCurrency;
+
+        public int GetPlayerLevel() => 10;
 
         public void UnlockNode(Node node)
         {
-            if (!IsNodeUnlocked(node.ID))
-            {
-                _data.UnlockedNodeIds.Add(node.ID.Value);
-                _data.SavedCurrency -= node.Cost;
-                Save();
-            }
+            if (IsNodeUnlocked(node.ID))
+                return;
+
+            _data.UnlockedNodeIds.Add(node.ID.Value);
+            _data.SavedCurrency -= node.Cost;
+
+            Save();
         }
 
-        public int GetCurrentCurrency() => _data.SavedCurrency;
-        public int GetPlayerLevel() => 10;
+        public void AddCurrency(int amount)
+        {
+            _data.SavedCurrency += amount;
+            Save();
+        }
 
-        public void Save()
+        public void ResetProgression()
+        {
+            _data = new UpgradeTreeSaveData();
+            Save();
+        }
+
+        private void Save()
         {
             string json = JsonUtility.ToJson(_data);
             File.WriteAllText(_savePath, json);
         }
 
-        public void Load()
+        private void Load()
         {
-            if (File.Exists(_savePath))
+            if (!File.Exists(_savePath))
             {
-                string json = File.ReadAllText(_savePath);
-                _data = JsonUtility.FromJson<UpgradeTreeSaveData>(json);
-            }
-        }
-
-        public void ResetProgression()
-        {
-            _data.UnlockedNodeIds.Clear();
-
-            _data.SavedCurrency = 0;
-
-            if (File.Exists(_savePath))
-            {
-                File.Delete(_savePath);
+                _data = new UpgradeTreeSaveData();
+                return;
             }
 
-            Save();
-
-            Debug.Log("Upgrade Tree Progression has been reset.");
+            string json = File.ReadAllText(_savePath);
+            _data = JsonUtility.FromJson<UpgradeTreeSaveData>(json);
         }
     }
 }

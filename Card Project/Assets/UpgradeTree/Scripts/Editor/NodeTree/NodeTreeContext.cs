@@ -14,8 +14,6 @@ namespace Eiquif.UpgradeTree.Runtime
         public SerializedProperty NodesProp { get; }
         public SerializedProperty IDsProp { get; }
 
-        public double LastUpdateTime { get; private set; }
-
         public NodeTreeContext(
             NodeTree tree,
             SerializedObject so)
@@ -38,7 +36,7 @@ namespace Eiquif.UpgradeTree.Runtime
         }
 #if UNITY_EDITOR
         #region Future addition
-        public void UpdateTime(double time) => LastUpdateTime = time;
+        public void UpdateTime(double time) => lastUpdateTime = time;
         #endregion
 #endif
         private void Errors()

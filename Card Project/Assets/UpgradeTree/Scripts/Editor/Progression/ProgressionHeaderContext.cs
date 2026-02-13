@@ -2,15 +2,15 @@
 // Author: Eiquif
 // Last Updated: January 2026
 //***************************************************************************************
-using System;
-using System.Collections.Generic;
+using Eiquif.UpgradeTree.Runtime;
+using UnityEngine;
 
-namespace Eiquif.UpgradeTree.Runtime
+namespace Eiquif.UpgradeTree.Editor
 {
-    [Serializable]
-    public class UpgradeTreeSaveData
+    public sealed class ProgressionHeaderContext
     {
-        public List<string> UnlockedNodeIds = new();
-        public int SavedCurrency;
+        public Rect Rect;
+        public string Name;
+        public ProgressionContext ProgressionContext;
     }
 }

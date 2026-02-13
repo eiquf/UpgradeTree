@@ -14,8 +14,6 @@ namespace Eiquif.UpgradeTree.Runtime
         public SerializedProperty NextProp { get; }
         public SerializedProperty PrerequisiteProp { get; }
 
-        public double LastUpdateTime { get; private set; }
-
         public NodeContext(
             SerializedObject so,
             Node node)
@@ -28,6 +26,6 @@ namespace Eiquif.UpgradeTree.Runtime
             PrerequisiteProp = so.FindProperty(NodePropertiesNames.PrerequisiteNodes);
         }
 
-        public void UpdateTime(double time) => LastUpdateTime = time;
+        public void UpdateTime(double time) => lastUpdateTime = time;
     }
 }

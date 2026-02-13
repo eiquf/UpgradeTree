@@ -7,33 +7,32 @@ using UnityEngine;
 
 namespace Eiquif.UpgradeTree.Editor
 {
-    public sealed class NodeEditorNames : EditorNames
+    public sealed class ProgressionEditorNames : EditorNames
     {
-        private readonly NodeContext _ctx;
-        private readonly NodeHeaderContext _headerCtx;
+        private readonly ProgressionContext _ctx;
+        private readonly ProgressionHeaderContext _headerCtx;
 
-        private readonly IElement<NodeHeaderContext>[] _header;
+        private readonly IElement<ProgressionHeaderContext>[] _header;
         private readonly IElement<ContextSystem>[] _footer;
         private readonly IElement[] _staticFooter;
 
-        public NodeEditorNames(ContextSystem context, string name)
+        public ProgressionEditorNames(ContextSystem context, string name)
             : base(context)
         {
-            _ctx = (NodeContext)context;
+            _ctx = (ProgressionContext)context;
 
-            _headerCtx = new NodeHeaderContext
+            _headerCtx = new ProgressionHeaderContext
             {
                 Name = name,
-                NodeContext = _ctx
+                ProgressionContext = _ctx
             };
 
-            _header = new IElement<NodeHeaderContext>[]
+            _header = new IElement<ProgressionHeaderContext>[]
             {
-                new NodeHeaderBackgroundElement(),
-                new NodeHeaderBordersElement(),
-                new NodeHeaderIconsElement(),
-                new NodeHeaderTitleElement(),
-                new NodeHeaderStatusBadgeElement()
+                new ProgressionHeaderBackgroundElement(),
+                new ProgressionHeaderBordersElement(),
+                new ProgressionIconsElement(),
+                new ProgressionHeaderTitleElement()
             };
 
             _footer = new IElement<ContextSystem>[]

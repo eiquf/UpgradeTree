@@ -13,7 +13,7 @@ namespace Eiquif.UpgradeTree.Editor
         private readonly NodeTreeHeaderContext _headerCtx;
 
         private readonly IElement<NodeTreeHeaderContext>[] _headerElements;
-        private readonly IElement<NodeTreeContext>[] _footerElements;
+        private readonly IElement<ContextSystem>[] _footerElements;
         private readonly IElement[] _staticElements;
 
         public NodeTreeEditorNames(ContextSystem context, string name)
@@ -36,14 +36,14 @@ namespace Eiquif.UpgradeTree.Editor
                 new HeaderStatusBadgeElement()
             };
 
-            _footerElements = new IElement<NodeTreeContext>[]
+            _footerElements = new IElement<ContextSystem>[]
             {
-                new HeaderFooterButtonsElement()
+                new FooterButtonsElement()
             };
 
             _staticElements = new IElement[]
             {
-                new HeaderFooterTextElement()
+                new FooterTextElement()
             };
         }
         protected override void OnDrawFooter()

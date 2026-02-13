@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tree: {fileID: 0}
-  _nodeUIPrefab: {fileID: 0}
+  _nodeUIPrefab: {fileID: 8292856214365048433, guid: 2b4a078f8bc3ec34c8dc4ef36db6cbce, type: 3}
   _container: {fileID: 0}
   _progressionAsset: {fileID: 0}
   _conditionAsset: {fileID: 0}
